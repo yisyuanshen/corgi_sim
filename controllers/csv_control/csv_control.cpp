@@ -47,7 +47,10 @@ int main(int argc, char **argv) {
 
         int csv_idx = 0;
         for (auto& mod: corgi.leg_mods){
-            mod->setLegPosition(csv_data[loop_counter][csv_idx], csv_data[loop_counter][csv_idx+1]);
+            double right_phi_cmd = csv_data[loop_counter][csv_idx];
+            double left_phi_cmd = csv_data[loop_counter][csv_idx];
+            
+            mod->setLegPosition(right_phi_cmd, left_phi_cmd);
             csv_idx += 2;
         }
 

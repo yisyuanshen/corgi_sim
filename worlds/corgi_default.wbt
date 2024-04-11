@@ -3,13 +3,14 @@
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/solids/protos/SolidBox.proto"
 
 WorldInfo {
   basicTimeStep 1
 }
 Viewpoint {
-  orientation -0.12556664102780415 0.25968487380716354 0.9574950574163565 0.9353011782943973
-  position -3.8464295756552387 -1.4610384538430135 0.6975309623882586
+  orientation -0.1839854643414946 0.38171412084301604 0.9057834613527055 0.9780614105869285
+  position -3.886069862387843 -1.6809792501669254 1.0817384403156147
   follow "robot"
 }
 TexturedBackground {
@@ -20,7 +21,7 @@ Floor {
   size 10 4
 }
 DEF CORGI Robot {
-  translation -3 0.2 0.15
+  translation -3 0 0.4
   rotation 1 0 0 1.5708
   children [
     DEF BASE Shape {
@@ -2457,7 +2458,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF RF_lmotorbar Solid {
         translation 0.20001520581176316 6.85411924369486e-05 0.14999903248486723
-        rotation 3.5893332759151286e-10 0.9999999999387917 -1.1064205190489136e-05 3.141636699015246
+        rotation 3.589333275915114e-10 0.9999999999387917 -1.106420519048916e-05 3.141636699015246
         children [
           USE group_lmotorbar
           DEF RF_Ll5l6 HingeJoint {
@@ -2720,7 +2721,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF RH_lmotorbar Solid {
         translation -0.19999988784270625 -8.326182678796907e-07 0.15000034530646555
-        rotation 4.4442782787648454e-12 -0.9999999999996939 -7.824504822816584e-07 3.14160104444671
+        rotation 4.4442782787648454e-12 -0.9999999999996939 -7.82450482281657e-07 3.14160104444671
         children [
           USE group_lmotorbar
           DEF RH_Ll5l6 HingeJoint {
@@ -2840,9 +2841,17 @@ DEF CORGI Robot {
       0 0 0
     ]
   }
-  controller "csv_control"
+  controller "rt_control"
   controllerArgs [
-    "output_csv/test input_csv/test"
+    "output_csv/test.csv input_csv/test.csv"
   ]
   supervisor TRUE
+}
+SolidBox {
+  translation -3 0 0.15
+  size 0.3 0.15 0.3
+  appearance PBRAppearance {
+    baseColor 0.8 1 1
+    metalness 0
+  }
 }
