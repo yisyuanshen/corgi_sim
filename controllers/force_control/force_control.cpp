@@ -33,10 +33,10 @@ int main(int argc, char **argv) {
     }
 
     Eigen::MatrixXd force_cmd(4, 4);
-    force_cmd << 0.0, -0.2, 8, 50, // x_d, y_d, f_x, f_y
-                 0.0, -0.2, 8, 50,
-                 0.0, -0.2, 8, 50,
-                 0.0, -0.2, 8, 50;
+    force_cmd << 0.0, -0.25, 8, 50, // x_d, y_d, f_x, f_y
+                 0.0, -0.25, 8, 50,
+                 0.0, -0.25, 8, 50,
+                 0.0, -0.25, 8, 50;
 
     supervisor->step(1000);
 
@@ -45,11 +45,16 @@ int main(int argc, char **argv) {
         printf(" \n= = = Loop Count %d = = =\n", loop_counter);
 
         // publishMsg(motor_fb_msg);
-
-        // for (int i=0; i<4; i++){
-        //     force_cmd(i, 0) = 0.05 * sin(0.02*loop_counter);
-        //     force_cmd(i, 1) = -0.15 + 0.05 * cos(0.02*loop_counter);
-        // }
+        if (loop_counter < 3000)
+            for (int i=0; i<4; i++){
+                force_cmd(i, 0) = -0.06 * sin(0.01*loop_counter);
+                force_cmd(i, 1) = -0.19 - 0.06 * cos(0.01*loop_counter);
+            }
+        if (loop_counter >= 3000)
+            for (int i=0; i<4; i++){
+                force_cmd(i, 0) = -0.2 * sin(0.005*loop_counter);
+                force_cmd(i, 1) = -0.08 * sin(0.015*loop_counter) - 0.2 * cos(0.005*loop_counter);
+            }
         
         int mod_idx = 0;
         for (auto& mod: corgi.leg_mods){
@@ -101,7 +106,8 @@ int main(int argc, char **argv) {
                 Eigen::Vector2d phi_cmd = mod->force_tracker.controlLoop(X_d, F_d, tb_fb, trq_fb, phi_vel);
 
                 // printf("phi_cmd = [%lf, %lf]\n", phi_cmd[0], phi_cmd[1]);
-                printf("Force Measured = [%lf, %lf, %lf]\n", mod->force[0], mod->force[1], mod->force[2]);
+                // printf("Force Measured = [%lf, %lf, %lf]\n", mod->force[0], mod->force[1], mod->force[2]);
+                printf("Z-axis Force Measured = %.2f N\n", mod->force[2]);
                 printf("- - -\n");
 
                 mod->setLegPosition(phi_cmd[0], phi_cmd[1]);
