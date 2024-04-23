@@ -10,11 +10,35 @@
 
 using namespace webots;
 
+std::mutex mutex_;
+motor_msg::MotorStamped motor_data;
+force_msg::LegForceStamped force_data;
+
+void motor_data_cb(motor_msg::MotorStamped msg)
+{
+    mutex_.lock();
+    motor_data = msg;
+    mutex_.unlock();
+}
+
+void force_data_cb(force_msg::LegForceStamped msg)
+{
+    mutex_.lock();
+    force_data = msg;
+    mutex_.unlock();
+}
 
 int main(int argc, char **argv) {
     // Declare the force message
     // const force_msg::LegForceStamped& force_cmd_msg;
     // force_msg::LegForceStamped& force_fb_msg;
+    setenv("CORE_LOCAL_IP", "127.0.0.1", 0);
+    setenv("CORE_MASTER_ADDR", "127.0.0.1:10010", 0);
+    
+    core::NodeHandler nh;
+    core::Ticker ticker;
+    core::Subscriber<motor_msg::MotorStamped> &motor_sub = nh.subscribe<motor_msg::MotorStamped>("motor/command", 1000, motor_data_cb);
+    core::Subscriber<force_msg::LegForceStamped> &force_sub = nh.subscribe<force_msg::LegForceStamped>("force/force_command", 1000, force_data_cb);
 
     // Setup the robot
     Supervisor *supervisor = new Supervisor();
@@ -33,18 +57,30 @@ int main(int argc, char **argv) {
     }
 
     Eigen::MatrixXd force_cmd(4, 4);
-    force_cmd << 0.0, -0.25, 8, 50, // x_d, y_d, f_x, f_y
-                 0.0, -0.25, 8, 50,
-                 0.0, -0.25, 8, 50,
-                 0.0, -0.25, 8, 50;
+    force_cmd << 0.0, -0.1, 8, 50, // x_d, y_d, f_x, f_y
+                 0.0, -0.1, 8, 50,
+                 0.0, -0.1, 8, 50,
+                 0.0, -0.1, 8, 50;
 
     supervisor->step(1000);
 
     int loop_counter = 0;
     while (supervisor->step(TIME_STEP) != -1) {
         printf(" \n= = = Loop Count %d = = =\n", loop_counter);
+        core::spinOnce();
+        mutex_.lock();
+
+        if (force_data.force().size() == 4){
+            for (int i=0; i<4; i++){
+                force_cmd(i, 0) = force_data.force(i).pose_x();
+                force_cmd(i, 1) = force_data.force(i).pose_y();
+                force_cmd(i, 2) = force_data.force(i).force_x();
+                force_cmd(i, 3) = force_data.force(i).force_y();
+            }
+        }
 
         // publishMsg(motor_fb_msg);
+        /*
         if (loop_counter < 3000)
             for (int i=0; i<4; i++){
                 force_cmd(i, 0) = -0.06 * sin(0.01*loop_counter);
@@ -55,6 +91,7 @@ int main(int argc, char **argv) {
                 force_cmd(i, 0) = -0.2 * sin(0.005*loop_counter);
                 force_cmd(i, 1) = -0.08 * sin(0.015*loop_counter) - 0.2 * cos(0.005*loop_counter);
             }
+        */
         
         int mod_idx = 0;
         for (auto& mod: corgi.leg_mods){
@@ -107,7 +144,7 @@ int main(int argc, char **argv) {
 
                 // printf("phi_cmd = [%lf, %lf]\n", phi_cmd[0], phi_cmd[1]);
                 // printf("Force Measured = [%lf, %lf, %lf]\n", mod->force[0], mod->force[1], mod->force[2]);
-                printf("Z-axis Force Measured = %.2f N\n", mod->force[2]);
+                // printf("Z-axis Force Measured = %.2f N\n", mod->force[2]);
                 printf("- - -\n");
 
                 mod->setLegPosition(phi_cmd[0], phi_cmd[1]);
@@ -167,6 +204,8 @@ int main(int argc, char **argv) {
             mod_idx++;
         }
         
+        mutex_.unlock();
+        ticker.tick(loop_counter*1000);
         loop_counter++;
     };
 

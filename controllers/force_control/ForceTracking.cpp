@@ -126,7 +126,7 @@ Eigen::Vector2d ForceTracker::controlLoop(const Eigen::Vector2d& X_d, const Eige
     update_delay_state<Eigen::Vector2d>(F_fb_q, F_est_l2g);
 
     // printf("Force Estimated = [%lf, %lf]\n", F_est_g2l[0], F_est_g2l[1]);
-    printf("Z-axis Force Estimated = %.2f N\n", F_est_g2l[1]);
+    // printf("Z-axis Force Estimated = %.2f N\n", F_est_g2l[1]);
 
     // adaptive stiffness
     Eigen::Matrix2d K_adpt;

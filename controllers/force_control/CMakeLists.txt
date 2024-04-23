@@ -69,7 +69,7 @@ target_link_libraries(RobotSetup Eigen3::Eigen)
 
 # Setup the target executable.
 add_executable(${PROJECT} ${SOURCES})
-target_link_libraries(${PROJECT} ${LIBRARIES} ${_CORE_LIBRARIES} motor_proto sensor_proto geometry_proto Eigen3::Eigen RobotSetup)
+target_link_libraries(${PROJECT} ${LIBRARIES} ${_CORE_LIBRARIES} motor_proto sensor_proto geometry_proto force_proto Eigen3::Eigen RobotSetup)
 # Copy the target executable at the right location.
 add_custom_command(TARGET ${PROJECT} POST_BUILD COMMAND ${CMAKE_COMMAND} -E
   copy ${CMAKE_BINARY_DIR}/${PROJECT} ${CMAKE_SOURCE_DIR}
