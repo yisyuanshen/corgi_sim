@@ -5,6 +5,7 @@
 #include "motor.pb.h"
 #include "sensor.pb.h"
 #include "force.pb.h"
+#include "robot.pb.h"
 
 #define TIME_STEP 1
 
@@ -39,6 +40,7 @@ int main(int argc, char **argv) {
     core::Ticker ticker;
     core::Subscriber<motor_msg::MotorStamped> &motor_sub = nh.subscribe<motor_msg::MotorStamped>("motor/command", 1000, motor_data_cb);
     core::Subscriber<force_msg::LegForceStamped> &force_sub = nh.subscribe<force_msg::LegForceStamped>("force/force_command", 1000, force_data_cb);
+    core::Publisher<robot_msg::State> &robot_state_pub = nh.advertise<robot_msg::State>("robot/state");
 
     // Setup the robot
     Supervisor *supervisor = new Supervisor();
@@ -200,6 +202,29 @@ int main(int argc, char **argv) {
                 force_fb_msg.add_impedance()->CopyFrom(imp);
                 */
             }
+
+            corgi.update_robot_param();
+            
+            printf("Position: [%lf, %lf, %lf]\n", corgi.pose_pos[0], corgi.pose_pos[1], corgi.pose_pos[2]);
+            printf("Orientation: [%lf, %lf, %lf, %lf]\n", corgi.pose_ori[0], corgi.pose_ori[1], corgi.pose_ori[2], corgi.pose_ori[3]);
+            printf("Lin Velocity: [%lf, %lf, %lf]\n", corgi.twist_lin[0], corgi.twist_lin[1], corgi.twist_lin[2]);
+            printf("Ang Velocity: [%lf, %lf, %lf]\n", corgi.twist_ang[0], corgi.twist_ang[1], corgi.twist_ang[2]);
+
+            robot_msg::State robot_state_msg;
+            robot_state_msg.mutable_pose()->mutable_position()->set_x(corgi.pose_pos[0]);
+            robot_state_msg.mutable_pose()->mutable_position()->set_y(corgi.pose_pos[1]);
+            robot_state_msg.mutable_pose()->mutable_position()->set_z(corgi.pose_pos[2]);
+            robot_state_msg.mutable_pose()->mutable_orientation()->set_x(corgi.pose_ori[0]);
+            robot_state_msg.mutable_pose()->mutable_orientation()->set_y(corgi.pose_ori[1]);
+            robot_state_msg.mutable_pose()->mutable_orientation()->set_z(corgi.pose_ori[2]);
+            robot_state_msg.mutable_pose()->mutable_orientation()->set_w(corgi.pose_ori[3]);
+            robot_state_msg.mutable_twist()->mutable_linear()->set_x(corgi.twist_lin[0]);
+            robot_state_msg.mutable_twist()->mutable_linear()->set_y(corgi.twist_lin[1]);
+            robot_state_msg.mutable_twist()->mutable_linear()->set_z(corgi.twist_lin[2]);
+            robot_state_msg.mutable_twist()->mutable_angular()->set_x(corgi.twist_ang[0]);
+            robot_state_msg.mutable_twist()->mutable_angular()->set_y(corgi.twist_ang[1]);
+            robot_state_msg.mutable_twist()->mutable_angular()->set_z(corgi.twist_ang[2]);
+            robot_state_pub.publish(robot_state_msg);
 
             mod_idx++;
         }

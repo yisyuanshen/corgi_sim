@@ -49,7 +49,10 @@ void Corgi::robot_initialize(Supervisor *supervisor){
 }
 
 void Corgi::update_robot_param(){
-    
+    this->pose_pos = this->robot_node->getCenterOfMass();
+    this->pose_ori = this->gyro->getQuaternion();
+    this->twist_lin = this->robot_node->getVelocity();
+    this->twist_ang = this->ang_vel->getValues();
 }
 
 void LegModule::update_leg_param(){

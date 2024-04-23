@@ -61,13 +61,17 @@ class Corgi{
         
         std::vector<LegModule*> leg_mods;
 
-        Corgi()
-        : mod_A(new LegModule), 
-          mod_B(new LegModule), 
-          mod_C(new LegModule), 
-          mod_D(new LegModule), 
-          leg_mods{mod_A, mod_B, mod_C, mod_D} {}
+        Corgi():
+            mod_A(new LegModule), 
+            mod_B(new LegModule), 
+            mod_C(new LegModule), 
+            mod_D(new LegModule), 
+            leg_mods{mod_A, mod_B, mod_C, mod_D} {}
 
+        const double* pose_pos;
+        const double* pose_ori;
+        const double* twist_lin;
+        const double* twist_ang;
 
         void robot_initialize(Supervisor *supervisor);
         void update_robot_param();
