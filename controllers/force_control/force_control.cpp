@@ -30,9 +30,6 @@ void force_data_cb(force_msg::LegForceStamped msg)
 }
 
 int main(int argc, char **argv) {
-    // Declare the force message
-    // const force_msg::LegForceStamped& force_cmd_msg;
-    // force_msg::LegForceStamped& force_fb_msg;
     setenv("CORE_LOCAL_IP", "127.0.0.1", 0);
     setenv("CORE_MASTER_ADDR", "127.0.0.1:10010", 0);
     
@@ -41,6 +38,7 @@ int main(int argc, char **argv) {
     core::Subscriber<motor_msg::MotorStamped> &motor_sub = nh.subscribe<motor_msg::MotorStamped>("motor/command", 1000, motor_data_cb);
     core::Subscriber<force_msg::LegForceStamped> &force_sub = nh.subscribe<force_msg::LegForceStamped>("force/force_command", 1000, force_data_cb);
     core::Publisher<robot_msg::State> &robot_state_pub = nh.advertise<robot_msg::State>("robot/state");
+    core::Publisher<force_msg::LegForceStamped> &force_pub = nh.advertise<force_msg::LegForceStamped>("force/force_state");
 
     // Setup the robot
     Supervisor *supervisor = new Supervisor();
@@ -80,24 +78,9 @@ int main(int argc, char **argv) {
                 force_cmd(i, 3) = force_data.force(i).force_y();
             }
         }
-
-        // publishMsg(motor_fb_msg);
-        /*
-        if (loop_counter < 3000)
-            for (int i=0; i<4; i++){
-                force_cmd(i, 0) = -0.06 * sin(0.01*loop_counter);
-                force_cmd(i, 1) = -0.19 - 0.06 * cos(0.01*loop_counter);
-            }
-        if (loop_counter >= 3000)
-            for (int i=0; i<4; i++){
-                force_cmd(i, 0) = -0.2 * sin(0.005*loop_counter);
-                force_cmd(i, 1) = -0.08 * sin(0.015*loop_counter) - 0.2 * cos(0.005*loop_counter);
-            }
-        */
         
         int mod_idx = 0;
         for (auto& mod: corgi.leg_mods){
-            // if (force_cmd_msg.force().size() == 4) {
             if (force_cmd.rows() == 4) {
                 // X_d, F_d
                 double x_d = force_cmd(mod_idx, 0); // force_cmd_msg.force(mod_idx).pose_x();
@@ -147,7 +130,7 @@ int main(int argc, char **argv) {
                 // printf("phi_cmd = [%lf, %lf]\n", phi_cmd[0], phi_cmd[1]);
                 // printf("Force Measured = [%lf, %lf, %lf]\n", mod->force[0], mod->force[1], mod->force[2]);
                 // printf("Z-axis Force Measured = %.2f N\n", mod->force[2]);
-                printf("- - -\n");
+                // printf("- - -\n");
 
                 mod->setLegPosition(phi_cmd[0], phi_cmd[1]);
 
@@ -203,31 +186,58 @@ int main(int argc, char **argv) {
                 */
             }
 
-            corgi.update_robot_param();
-            
-            printf("Position: [%lf, %lf, %lf]\n", corgi.pose_pos[0], corgi.pose_pos[1], corgi.pose_pos[2]);
-            printf("Orientation: [%lf, %lf, %lf, %lf]\n", corgi.pose_ori[0], corgi.pose_ori[1], corgi.pose_ori[2], corgi.pose_ori[3]);
-            printf("Lin Velocity: [%lf, %lf, %lf]\n", corgi.twist_lin[0], corgi.twist_lin[1], corgi.twist_lin[2]);
-            printf("Ang Velocity: [%lf, %lf, %lf]\n", corgi.twist_ang[0], corgi.twist_ang[1], corgi.twist_ang[2]);
-
-            robot_msg::State robot_state_msg;
-            robot_state_msg.mutable_pose()->mutable_position()->set_x(corgi.pose_pos[0]);
-            robot_state_msg.mutable_pose()->mutable_position()->set_y(corgi.pose_pos[1]);
-            robot_state_msg.mutable_pose()->mutable_position()->set_z(corgi.pose_pos[2]);
-            robot_state_msg.mutable_pose()->mutable_orientation()->set_x(corgi.pose_ori[0]);
-            robot_state_msg.mutable_pose()->mutable_orientation()->set_y(corgi.pose_ori[1]);
-            robot_state_msg.mutable_pose()->mutable_orientation()->set_z(corgi.pose_ori[2]);
-            robot_state_msg.mutable_pose()->mutable_orientation()->set_w(corgi.pose_ori[3]);
-            robot_state_msg.mutable_twist()->mutable_linear()->set_x(corgi.twist_lin[0]);
-            robot_state_msg.mutable_twist()->mutable_linear()->set_y(corgi.twist_lin[1]);
-            robot_state_msg.mutable_twist()->mutable_linear()->set_z(corgi.twist_lin[2]);
-            robot_state_msg.mutable_twist()->mutable_angular()->set_x(corgi.twist_ang[0]);
-            robot_state_msg.mutable_twist()->mutable_angular()->set_y(corgi.twist_ang[1]);
-            robot_state_msg.mutable_twist()->mutable_angular()->set_z(corgi.twist_ang[2]);
-            robot_state_pub.publish(robot_state_msg);
-
             mod_idx++;
         }
+
+        corgi.update_robot_param();
+        
+        printf("Position: [%lf, %lf, %lf]\n", corgi.pose_pos[0], corgi.pose_pos[1], corgi.pose_pos[2]);
+        printf("Orientation: [%lf, %lf, %lf, %lf]\n", corgi.pose_ori[0], corgi.pose_ori[1], corgi.pose_ori[2], corgi.pose_ori[3]);
+        printf("Lin Velocity: [%lf, %lf, %lf]\n", corgi.twist_lin[0], corgi.twist_lin[1], corgi.twist_lin[2]);
+        printf("Ang Velocity: [%lf, %lf, %lf]\n", corgi.twist_ang[0], corgi.twist_ang[1], corgi.twist_ang[2]);
+        printf("- - -\n");
+
+        robot_msg::State robot_state_msg;
+        robot_state_msg.mutable_pose()->mutable_position()->set_x(corgi.pose_pos[0]);
+        robot_state_msg.mutable_pose()->mutable_position()->set_y(corgi.pose_pos[1]);
+        robot_state_msg.mutable_pose()->mutable_position()->set_z(corgi.pose_pos[2]);
+        robot_state_msg.mutable_pose()->mutable_orientation()->set_x(corgi.pose_ori[0]);
+        robot_state_msg.mutable_pose()->mutable_orientation()->set_y(corgi.pose_ori[1]);
+        robot_state_msg.mutable_pose()->mutable_orientation()->set_z(corgi.pose_ori[2]);
+        robot_state_msg.mutable_pose()->mutable_orientation()->set_w(corgi.pose_ori[3]);
+        robot_state_msg.mutable_twist()->mutable_linear()->set_x(corgi.twist_lin[0]);
+        robot_state_msg.mutable_twist()->mutable_linear()->set_y(corgi.twist_lin[1]);
+        robot_state_msg.mutable_twist()->mutable_linear()->set_z(corgi.twist_lin[2]);
+        robot_state_msg.mutable_twist()->mutable_angular()->set_x(corgi.twist_ang[0]);
+        robot_state_msg.mutable_twist()->mutable_angular()->set_y(corgi.twist_ang[1]);
+        robot_state_msg.mutable_twist()->mutable_angular()->set_z(corgi.twist_ang[2]);
+        robot_state_pub.publish(robot_state_msg);
+
+
+        printf("Mod_A Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_A->force[0], corgi.mod_A->force[1], corgi.mod_A->force[2]);
+        printf("Mod_B Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_B->force[0], corgi.mod_B->force[1], corgi.mod_B->force[2]);
+        printf("Mod_C Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_C->force[0], corgi.mod_C->force[1], corgi.mod_C->force[2]);
+        printf("Mod_D Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_D->force[0], corgi.mod_D->force[1], corgi.mod_D->force[2]);
+
+        force_msg::LegForceStamped force_state_msg;
+        force_msg::LegForce force_A_LF;
+        force_msg::LegForce force_B_RF;
+        force_msg::LegForce force_C_RH;
+        force_msg::LegForce force_D_LH;
+
+        force_A_LF.set_force_x(corgi.mod_A->force[0]);
+        force_A_LF.set_force_y(corgi.mod_A->force[2]);
+        force_B_RF.set_force_x(corgi.mod_B->force[0]);
+        force_B_RF.set_force_y(corgi.mod_B->force[2]);
+        force_C_RH.set_force_x(corgi.mod_C->force[0]);
+        force_C_RH.set_force_y(corgi.mod_C->force[2]);
+        force_D_LH.set_force_x(corgi.mod_D->force[0]);
+        force_D_LH.set_force_y(corgi.mod_D->force[2]);
+        force_state_msg.add_force()->CopyFrom(force_A_LF);
+        force_state_msg.add_force()->CopyFrom(force_B_RF);
+        force_state_msg.add_force()->CopyFrom(force_C_RH);
+        force_state_msg.add_force()->CopyFrom(force_D_LH);
+        force_pub.publish(force_state_msg);
         
         mutex_.unlock();
         ticker.tick(loop_counter*1000);
