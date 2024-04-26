@@ -218,6 +218,12 @@ int main(int argc, char **argv) {
         printf("Mod_B Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_B->force[0], corgi.mod_B->force[1], corgi.mod_B->force[2]);
         printf("Mod_C Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_C->force[0], corgi.mod_C->force[1], corgi.mod_C->force[2]);
         printf("Mod_D Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_D->force[0], corgi.mod_D->force[1], corgi.mod_D->force[2]);
+        printf("- - -\n");
+
+        printf("Mod_A Leg Pose: [%lf, %lf]\n", corgi.mod_A->pose[0], corgi.mod_A->pose[1]);
+        printf("Mod_B Leg Pose: [%lf, %lf]\n", corgi.mod_B->pose[0], corgi.mod_B->pose[1]);
+        printf("Mod_C Leg Pose: [%lf, %lf]\n", corgi.mod_C->pose[0], corgi.mod_C->pose[1]);
+        printf("Mod_D Leg Pose: [%lf, %lf]\n", corgi.mod_D->pose[0], corgi.mod_D->pose[1]);
 
         force_msg::LegForceStamped force_state_msg;
         force_msg::LegForce force_A_LF;
@@ -227,12 +233,20 @@ int main(int argc, char **argv) {
 
         force_A_LF.set_force_x(corgi.mod_A->force[0]);
         force_A_LF.set_force_y(corgi.mod_A->force[2]);
+        force_A_LF.set_pose_x(corgi.mod_A->pose[0]);
+        force_A_LF.set_pose_y(corgi.mod_A->pose[1]);
         force_B_RF.set_force_x(corgi.mod_B->force[0]);
         force_B_RF.set_force_y(corgi.mod_B->force[2]);
+        force_B_RF.set_pose_x(corgi.mod_B->pose[0]);
+        force_B_RF.set_pose_y(corgi.mod_B->pose[1]);
         force_C_RH.set_force_x(corgi.mod_C->force[0]);
         force_C_RH.set_force_y(corgi.mod_C->force[2]);
+        force_C_RH.set_pose_x(corgi.mod_C->pose[0]);
+        force_C_RH.set_pose_y(corgi.mod_C->pose[1]);
         force_D_LH.set_force_x(corgi.mod_D->force[0]);
         force_D_LH.set_force_y(corgi.mod_D->force[2]);
+        force_D_LH.set_pose_x(corgi.mod_D->pose[0]);
+        force_D_LH.set_pose_y(corgi.mod_D->pose[1]);
         force_state_msg.add_force()->CopyFrom(force_A_LF);
         force_state_msg.add_force()->CopyFrom(force_B_RF);
         force_state_msg.add_force()->CopyFrom(force_C_RH);

@@ -45,6 +45,7 @@ class LegModule{
         double left_motor_torque = 0.0;
 
         Eigen::Vector3d force;
+        Eigen::Vector2d pose;
 
         void setLegPosition(double right_phi_cmd, double left_phi_cmd);
         void update_leg_param();
