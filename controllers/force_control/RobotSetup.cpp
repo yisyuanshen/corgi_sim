@@ -75,8 +75,8 @@ void LegModule::update_leg_param(){
                   
     this->force = (rot_matrix*this->force).transpose();
 
-    Eigen::Vector2d phi(this->right_motor_position, this->left_motor_position);
-    this->pose = fk(phi2tb(phi));
+    Eigen::Vector2d phi_pos(this->right_motor_position, this->left_motor_position);
+    this->pose = fk(phi2tb(phi_pos));
 }
 
 void LegModule::setLegPosition(double right_phi_cmd, double left_phi_cmd){

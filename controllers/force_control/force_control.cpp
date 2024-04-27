@@ -12,22 +12,29 @@
 using namespace webots;
 
 std::mutex mutex_;
-motor_msg::MotorStamped motor_data;
-force_msg::LegForceStamped force_data;
+motor_msg::MotorStamped motor_fb_msg;
+force_msg::LegForceStamped force_fb_msg;
+
+int motor_msg_updated;
+int force_msg_updated;
 
 void motor_data_cb(motor_msg::MotorStamped msg)
 {
     mutex_.lock();
-    motor_data = msg;
+    motor_fb_msg = msg;
+    motor_msg_updated = 1;
     mutex_.unlock();
 }
+
 
 void force_data_cb(force_msg::LegForceStamped msg)
 {
     mutex_.lock();
-    force_data = msg;
+    force_fb_msg = msg;
+    force_msg_updated = 1;
     mutex_.unlock();
 }
+
 
 int main(int argc, char **argv) {
     setenv("CORE_LOCAL_IP", "127.0.0.1", 0);
@@ -36,9 +43,13 @@ int main(int argc, char **argv) {
     core::NodeHandler nh;
     core::Ticker ticker;
     core::Subscriber<motor_msg::MotorStamped> &motor_sub = nh.subscribe<motor_msg::MotorStamped>("motor/command", 1000, motor_data_cb);
-    core::Subscriber<force_msg::LegForceStamped> &force_sub = nh.subscribe<force_msg::LegForceStamped>("force/force_command", 1000, force_data_cb);
-    core::Publisher<robot_msg::State> &robot_state_pub = nh.advertise<robot_msg::State>("robot/state");
-    core::Publisher<force_msg::LegForceStamped> &force_pub = nh.advertise<force_msg::LegForceStamped>("force/force_state");
+    core::Subscriber<force_msg::LegForceStamped> &force_sub = nh.subscribe<force_msg::LegForceStamped>("force/command", 1000, force_data_cb);
+    core::Publisher<motor_msg::MotorStamped> &motor_pub = nh.advertise<motor_msg::MotorStamped>("motor/state");
+    core::Publisher<force_msg::LegForceStamped> &force_pub = nh.advertise<force_msg::LegForceStamped>("force/state");
+    core::Publisher<robot_msg::State> &robot_pub = nh.advertise<robot_msg::State>("robot/state");
+
+    motor_msg_updated = 0;
+    force_msg_updated = 0;
 
     // Setup the robot
     Supervisor *supervisor = new Supervisor();
@@ -57,36 +68,38 @@ int main(int argc, char **argv) {
     }
 
     Eigen::MatrixXd force_cmd(4, 4);
-    force_cmd << 0.0, -0.1, 8, 50, // x_d, y_d, f_x, f_y
-                 0.0, -0.1, 8, 50,
-                 0.0, -0.1, 8, 50,
-                 0.0, -0.1, 8, 50;
+    force_cmd << 0.0, -0.1, 10, 80, // x_d, y_d, f_x, f_y
+                 0.0, -0.1, 10, 80,
+                 0.0, -0.1, 10, 80,
+                 0.0, -0.1, 10, 80;
 
     supervisor->step(1000);
 
     int loop_counter = 0;
     while (supervisor->step(TIME_STEP) != -1) {
         printf(" \n= = = Loop Count %d = = =\n", loop_counter);
+
         core::spinOnce();
         mutex_.lock();
 
-        if (force_data.force().size() == 4){
+        if (force_msg_updated){
             for (int i=0; i<4; i++){
-                force_cmd(i, 0) = force_data.force(i).pose_x();
-                force_cmd(i, 1) = force_data.force(i).pose_y();
-                force_cmd(i, 2) = force_data.force(i).force_x();
-                force_cmd(i, 3) = force_data.force(i).force_y();
+                force_cmd(i, 0) = force_fb_msg.force(i).pose_x();
+                force_cmd(i, 1) = force_fb_msg.force(i).pose_y();
+                force_cmd(i, 2) = force_fb_msg.force(i).force_x();
+                force_cmd(i, 3) = force_fb_msg.force(i).force_y();
             }
+            force_msg_updated = 0;
         }
         
         int mod_idx = 0;
         for (auto& mod: corgi.leg_mods){
             if (force_cmd.rows() == 4) {
                 // X_d, F_d
-                double x_d = force_cmd(mod_idx, 0); // force_cmd_msg.force(mod_idx).pose_x();
-                double y_d = force_cmd(mod_idx, 1); // force_cmd_msg.force(mod_idx).pose_y();
-                double f_x = force_cmd(mod_idx, 2); // force_cmd_msg.force(mod_idx).force_x();
-                double f_y = force_cmd(mod_idx, 3); // force_cmd_msg.force(mod_idx).force_y();
+                double x_d = force_cmd(mod_idx, 0);
+                double y_d = force_cmd(mod_idx, 1);
+                double f_x = force_cmd(mod_idx, 2);
+                double f_y = force_cmd(mod_idx, 3);
 
                 Eigen::Vector2d X_d(x_d, y_d);
                 Eigen::Vector2d F_d(f_x, f_y);
@@ -120,17 +133,8 @@ int main(int argc, char **argv) {
                 Eigen::Vector2d phi_vel(mod->right_motor_velocity, mod->left_motor_velocity);
                 // trq_fb = trq_fb * 2.2; // KT compensation
 
-                // printf("phi_fb = [%lf, %lf]\n", phi_fb[0], phi_fb[1]);
-                // printf("tb_fb = [%lf, %lf]\n", tb_fb[0], tb_fb[1]);
-                // printf("trq_fb = [%lf, %lf]\n", trq_fb[0], trq_fb[1]);
-                // printf("phi_vel = [%lf, %lf]\n", phi_vel[0], phi_vel[1]);
-
                 Eigen::Vector2d phi_cmd = mod->force_tracker.controlLoop(X_d, F_d, tb_fb, trq_fb, phi_vel);
-
-                // printf("phi_cmd = [%lf, %lf]\n", phi_cmd[0], phi_cmd[1]);
-                // printf("Force Measured = [%lf, %lf, %lf]\n", mod->force[0], mod->force[1], mod->force[2]);
-                // printf("Z-axis Force Measured = %.2f N\n", mod->force[2]);
-                // printf("- - -\n");
+                printf("mod %d phi_cmd: [%lf, %lf]\n", mod_idx, phi_cmd[0], phi_cmd[1]);
 
                 mod->setLegPosition(phi_cmd[0], phi_cmd[1]);
 
@@ -191,6 +195,7 @@ int main(int argc, char **argv) {
 
         corgi.update_robot_param();
         
+        printf("- - -\n");
         printf("Position: [%lf, %lf, %lf]\n", corgi.pose_pos[0], corgi.pose_pos[1], corgi.pose_pos[2]);
         printf("Orientation: [%lf, %lf, %lf, %lf]\n", corgi.pose_ori[0], corgi.pose_ori[1], corgi.pose_ori[2], corgi.pose_ori[3]);
         printf("Lin Velocity: [%lf, %lf, %lf]\n", corgi.twist_lin[0], corgi.twist_lin[1], corgi.twist_lin[2]);
@@ -211,7 +216,7 @@ int main(int argc, char **argv) {
         robot_state_msg.mutable_twist()->mutable_angular()->set_x(corgi.twist_ang[0]);
         robot_state_msg.mutable_twist()->mutable_angular()->set_y(corgi.twist_ang[1]);
         robot_state_msg.mutable_twist()->mutable_angular()->set_z(corgi.twist_ang[2]);
-        robot_state_pub.publish(robot_state_msg);
+        robot_pub.publish(robot_state_msg);
 
 
         printf("Mod_A Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_A->force[0], corgi.mod_A->force[1], corgi.mod_A->force[2]);
@@ -226,36 +231,35 @@ int main(int argc, char **argv) {
         printf("Mod_D Leg Pose: [%lf, %lf]\n", corgi.mod_D->pose[0], corgi.mod_D->pose[1]);
 
         force_msg::LegForceStamped force_state_msg;
-        force_msg::LegForce force_A_LF;
-        force_msg::LegForce force_B_RF;
-        force_msg::LegForce force_C_RH;
-        force_msg::LegForce force_D_LH;
+        force_msg::LegForce force_state;
 
-        force_A_LF.set_force_x(corgi.mod_A->force[0]);
-        force_A_LF.set_force_y(corgi.mod_A->force[2]);
-        force_A_LF.set_pose_x(corgi.mod_A->pose[0]);
-        force_A_LF.set_pose_y(corgi.mod_A->pose[1]);
-        force_B_RF.set_force_x(corgi.mod_B->force[0]);
-        force_B_RF.set_force_y(corgi.mod_B->force[2]);
-        force_B_RF.set_pose_x(corgi.mod_B->pose[0]);
-        force_B_RF.set_pose_y(corgi.mod_B->pose[1]);
-        force_C_RH.set_force_x(corgi.mod_C->force[0]);
-        force_C_RH.set_force_y(corgi.mod_C->force[2]);
-        force_C_RH.set_pose_x(corgi.mod_C->pose[0]);
-        force_C_RH.set_pose_y(corgi.mod_C->pose[1]);
-        force_D_LH.set_force_x(corgi.mod_D->force[0]);
-        force_D_LH.set_force_y(corgi.mod_D->force[2]);
-        force_D_LH.set_pose_x(corgi.mod_D->pose[0]);
-        force_D_LH.set_pose_y(corgi.mod_D->pose[1]);
-        force_state_msg.add_force()->CopyFrom(force_A_LF);
-        force_state_msg.add_force()->CopyFrom(force_B_RF);
-        force_state_msg.add_force()->CopyFrom(force_C_RH);
-        force_state_msg.add_force()->CopyFrom(force_D_LH);
+        motor_msg::MotorStamped motor_state_msg;
+        motor_msg::Motor motor_state;
+
+        for (auto& mod: corgi.leg_mods){
+            force_state.set_pose_x(mod->pose[0]);
+            force_state.set_pose_y(mod->pose[1]);
+            force_state.set_force_x(mod->force[0]);
+            force_state.set_force_y(mod->force[2]);
+            force_state_msg.add_force()->CopyFrom(force_state);
+
+            motor_state.set_angle(mod->right_motor_position);
+            motor_state_msg.add_motors()->CopyFrom(motor_state);
+
+            motor_state.set_angle(mod->left_motor_position);
+            motor_state_msg.add_motors()->CopyFrom(motor_state);
+        }
+
         force_pub.publish(force_state_msg);
+        motor_pub.publish(motor_state_msg);
         
         mutex_.unlock();
+        
         ticker.tick(loop_counter*1000);
+
         loop_counter++;
+
+        usleep(1000);
     };
 
     return 0;

@@ -140,17 +140,17 @@ Eigen::Vector2d ForceTracker::controlLoop(const Eigen::Vector2d& X_d, const Eige
     K_adpt << ka_x, 0, 0, ka_y;
 
 
-    /*
-    printf("T_fb_q[0] = [%lf, %lf]\n",T_fb_q[0][0], T_fb_q[0][1]);
-    printf("TB_fb_q[0] = [%lf, %lf]\n",TB_fb_q[0][0], TB_fb_q[0][1]);
-    printf("dtb = [%lf, %lf]\n",dtb[0], dtb[1]);
-    printf("ddtb = [%lf, %lf]\n",ddtb[0], ddtb[1]);
-    printf("tau_friction = [%lf, %lf]\n",tau_friction[0], tau_friction[1]);
-    printf("F_est_l2g = [%lf, %lf]\n",F_est_l2g[0], F_est_l2g[1]);
-    printf("X_d = [%lf, %lf]\n",X_d[0], X_d[1]);
-    printf("F_d = [%lf, %lf]\n",F_d[0], F_d[1]);
-    printf("K_adpt = [%lf, %lf]\n",ka_x, ka_y);
-    */
+    
+    // printf("T_fb_q[0] = [%lf, %lf]\n",T_fb_q[0][0], T_fb_q[0][1]);
+    // printf("TB_fb_q[0] = [%lf, %lf]\n",TB_fb_q[0][0], TB_fb_q[0][1]);
+    // printf("dtb = [%lf, %lf]\n",dtb[0], dtb[1]);
+    // printf("ddtb = [%lf, %lf]\n",ddtb[0], ddtb[1]);
+    // printf("tau_friction = [%lf, %lf]\n",tau_friction[0], tau_friction[1]);
+    // printf("F_est_l2g = [%lf, %lf]\n",F_est_l2g[0], F_est_l2g[1]);
+    // printf("X_d = [%lf, %lf]\n",X_d[0], X_d[1]);
+    // printf("F_d = [%lf, %lf]\n",F_d[0], F_d[1]);
+    // printf("K_adpt = [%lf, %lf]\n",ka_x, ka_y);
+    
 
     // track impedance trajectory
     Eigen::Vector2d phi = track(X_d, F_d, K_adpt);
