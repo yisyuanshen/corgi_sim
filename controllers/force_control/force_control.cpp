@@ -106,18 +106,26 @@ int main(int argc, char **argv) {
 
                 // load param from command
                 mod->force_tracker.M_d(0, 0) = 0.652; // force_cmd_msg.impedance(mod_idx).m_x();
+                mod->force_tracker.M_d(0, 1) = 0;     // force_cmd_msg.impedance(mod_idx).m_y();
                 mod->force_tracker.M_d(1, 1) = 0.652; // force_cmd_msg.impedance(mod_idx).m_y();
+                mod->force_tracker.M_d(1, 0) = 0;     // force_cmd_msg.impedance(mod_idx).m_y();
                 mod->force_tracker.K_0(0, 0) = 200000000; // force_cmd_msg.impedance(mod_idx).k0_x();
-                mod->force_tracker.K_0(1, 1) = 200000000; // force_cmd_msg.impedance(mod_idx).k0_y();
-                mod->force_tracker.D_d(0, 0) = 400; // force_cmd_msg.impedance(mod_idx).d_x();
-                mod->force_tracker.D_d(1, 1) = 600; // force_cmd_msg.impedance(mod_idx).d_y();
+                mod->force_tracker.K_0(0, 1) = 0;         // force_cmd_msg.impedance(mod_idx).k0_x();
+                mod->force_tracker.K_0(0, 0) = 200000000; // force_cmd_msg.impedance(mod_idx).k0_x();
+                mod->force_tracker.K_0(1, 1) = 0;         // force_cmd_msg.impedance(mod_idx).k0_y();
+                mod->force_tracker.D_d(0, 0) = 400;  // force_cmd_msg.impedance(mod_idx).d_x();
+                mod->force_tracker.D_d(0, 1) = 400;  // force_cmd_msg.impedance(mod_idx).d_x();
+                mod->force_tracker.D_d(0, 0) = 400;  // force_cmd_msg.impedance(mod_idx).d_x();
+                mod->force_tracker.D_d(1, 0) = 600;  // force_cmd_msg.impedance(mod_idx).d_y();
                 mod->force_tracker.force_tracker_x.kp = 1000; // force_cmd_msg.impedance(mod_idx).adaptive_kp_x();
                 mod->force_tracker.force_tracker_x.ki = 0; // force_cmd_msg.impedance(mod_idx).adaptive_ki_x();
                 mod->force_tracker.force_tracker_x.kd = 50; // force_cmd_msg.impedance(mod_idx).adaptive_kd_x();
+                mod->force_tracker.force_tracker_x.err_sum_lim = 10000;
                 mod->force_tracker.force_tracker_x.dT = 0.001; // force_cmd_msg.impedance(mod_idx).adaptive_kd_y();
                 mod->force_tracker.force_tracker_y.kp = 3000; // force_cmd_msg.impedance(mod_idx).adaptive_kp_y();
                 mod->force_tracker.force_tracker_y.ki = 1800; // force_cmd_msg.impedance(mod_idx).adaptive_ki_y();
                 mod->force_tracker.force_tracker_y.kd = 50; // force_cmd_msg.impedance(mod_idx).adaptive_kd_y();
+                mod->force_tracker.force_tracker_y.err_sum_lim = 12;
                 mod->force_tracker.force_tracker_y.dT = 0.001; // force_cmd_msg.impedance(mod_idx).adaptive_kd_y();
 
                 /*
@@ -258,8 +266,6 @@ int main(int argc, char **argv) {
         ticker.tick(loop_counter*1000);
 
         loop_counter++;
-
-        usleep(1000);
     };
 
     return 0;
