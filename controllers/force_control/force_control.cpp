@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
                 mod->force_tracker.force_tracker_x.ki = 0; // force_cmd_msg.impedance(mod_idx).adaptive_ki_x();
                 mod->force_tracker.force_tracker_x.kd = 50; // force_cmd_msg.impedance(mod_idx).adaptive_kd_x();
                 mod->force_tracker.force_tracker_x.err_sum_lim = 10000;
-                mod->force_tracker.force_tracker_x.dT = 1; // force_cmd_msg.impedance(mod_idx).adaptive_kd_y();
+                mod->force_tracker.force_tracker_x.dT = 0.001; // force_cmd_msg.impedance(mod_idx).adaptive_kd_y();
                 mod->force_tracker.force_tracker_y.kp = 3000; // force_cmd_msg.impedance(mod_idx).adaptive_kp_y();
                 mod->force_tracker.force_tracker_y.ki = 1800; // force_cmd_msg.impedance(mod_idx).adaptive_ki_y();
                 mod->force_tracker.force_tracker_y.kd = 50; // force_cmd_msg.impedance(mod_idx).adaptive_kd_y();
@@ -141,16 +141,16 @@ int main(int argc, char **argv) {
                 Eigen::Vector2d phi_vel(mod->right_motor_velocity, mod->left_motor_velocity);
                 // trq_fb = trq_fb * 2.2; // KT compensation
 
-                printf(">>> Before Controlloop\n");
-                printf("mod %d X_d: [%lf, %lf]\n", mod_idx, X_d[0], X_d[1]);
-                printf("mod %d F_d: [%lf, %lf]\n", mod_idx, F_d[0], F_d[1]);
-                printf("mod %d tb_fb: [%lf, %lf]\n", mod_idx, tb_fb[0], tb_fb[1]);
-                printf("mod %d trq_fb [%lf, %lf]\n", mod_idx, trq_fb[0], trq_fb[1]);
-                printf("mod %d phi_vel: [%lf, %lf]\n", mod_idx, phi_vel[0], phi_vel[1]);
+                // printf(">>> Before Controlloop\n");
+                // printf("mod %d X_d: [%lf, %lf]\n", mod_idx, X_d[0], X_d[1]);
+                // printf("mod %d F_d: [%lf, %lf]\n", mod_idx, F_d[0], F_d[1]);
+                // printf("mod %d tb_fb: [%lf, %lf]\n", mod_idx, tb_fb[0], tb_fb[1]);
+                // printf("mod %d trq_fb [%lf, %lf]\n", mod_idx, trq_fb[0], trq_fb[1]);
+                // printf("mod %d phi_vel: [%lf, %lf]\n", mod_idx, phi_vel[0], phi_vel[1]);
 
                 Eigen::Vector2d phi_cmd = mod->force_tracker.controlLoop(X_d, F_d, tb_fb, trq_fb, phi_vel);
 
-                printf(">>> After Controlloop\n");
+                // printf(">>> After Controlloop\n");
                 printf("mod %d phi_cmd: [%lf, %lf]\n", mod_idx, phi_cmd[0], phi_cmd[1]);
 
                 mod->setLegPosition(phi_cmd[0], phi_cmd[1]);

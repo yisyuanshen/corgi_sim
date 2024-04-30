@@ -131,9 +131,9 @@ Eigen::Vector2d ForceTracker::controlLoop(const Eigen::Vector2d& X_d, const Eige
     // adaptive stiffness
     Eigen::Matrix2d K_adpt;
 
-    printf(">>> Before Tracking\n");
-    printf("F_d: [%lf, %lf]\n", F_d[0], F_d[1]);
-    printf("F_est_g2l: [%lf, %lf]\n", F_est_g2l[0], F_est_g2l[1]);
+    // printf(">>> Before Tracking\n");
+    // printf("F_d: [%lf, %lf]\n", F_d[0], F_d[1]);
+    // printf("F_est_g2l: [%lf, %lf]\n", F_est_g2l[0], F_est_g2l[1]);
 
     double ka_x = force_tracker_x.tracking(F_d[0], F_est_g2l[0]);
     double ka_y = force_tracker_y.tracking(F_d[1], F_est_g2l[1]);
@@ -143,9 +143,9 @@ Eigen::Vector2d ForceTracker::controlLoop(const Eigen::Vector2d& X_d, const Eige
     }
     K_adpt << ka_x, 0, 0, ka_y;
 
-    printf(">>> After Tracking\n");
-    printf("ka_x: %lf\n", ka_x);
-    printf("ka_y: %lf\n", ka_y);
+    // printf(">>> After Tracking\n");
+    // printf("ka_x: %lf\n", ka_x);
+    // printf("ka_y: %lf\n", ka_y);
 
     
     // printf("T_fb_q[0] = [%lf, %lf]\n",T_fb_q[0][0], T_fb_q[0][1]);
@@ -160,9 +160,9 @@ Eigen::Vector2d ForceTracker::controlLoop(const Eigen::Vector2d& X_d, const Eige
     
 
     // track impedance trajectory
-    printf(">>> Before Track\n");
-    printf("X_d: [%lf, %lf]\n", X_d[0], X_d[1]);
-    printf("F_d: [%lf, %lf]\n", F_d[0], F_d[1]);
+    // printf(">>> Before Track\n");
+    // printf("X_d: [%lf, %lf]\n", X_d[0], X_d[1]);
+    // printf("F_d: [%lf, %lf]\n", F_d[0], F_d[1]);
     Eigen::Vector2d phi = track(X_d, F_d, K_adpt);
 
     /* term << F_d[0] << "," << F_est_g2l[0] << ",";
@@ -209,20 +209,20 @@ Eigen::Vector2d PositionBasedImpFilter(const Eigen::Matrix2d& M, const Eigen::Ma
                                        const std::deque<Eigen::Vector2d>& Xc, const std::deque<Eigen::Vector2d>& TB_fb,
                                        const std::deque<Eigen::Vector2d>& T_fb, const std::deque<Eigen::Vector2d>& F_fb)
 {
-    printf(">>> In PositionBasedImpFilter\n");
-    std::cout << "Matrix M:" << std::endl << M << std::endl;
-    std::cout << "Matrix K:" << std::endl << K << std::endl;
-    std::cout << "Matrix D:" << std::endl << D << std::endl;
-    std::cout << "Deque Xref:" << std::endl;
+    // printf(">>> In PositionBasedImpFilter\n");
+    // std::cout << "Matrix M:" << std::endl << M << std::endl;
+    // std::cout << "Matrix K:" << std::endl << K << std::endl;
+    // std::cout << "Matrix D:" << std::endl << D << std::endl;
+    // std::cout << "Deque Xref:" << std::endl;
 
-    for(const auto& vec : Xref) {
-        std::cout << vec.transpose() << std::endl;
-    }
+    // for(const auto& vec : Xref) {
+    //     std::cout << vec.transpose() << std::endl;
+    // }
 
-    std::cout << "Deque Fref:" << std::endl;
-    for(const auto& vec : Fref) {
-        std::cout << vec.transpose() << std::endl;
-    }
+    // std::cout << "Deque Fref:" << std::endl;
+    // for(const auto& vec : Fref) {
+    //     std::cout << vec.transpose() << std::endl;
+    // }
 
     /* Xref = [x_k, y_k;
               x_k_1, y_k_1;
@@ -269,9 +269,9 @@ Eigen::Vector2d PositionBasedImpFilter(const Eigen::Matrix2d& M, const Eigen::Ma
 
     Eigen::Vector2d Xc_k = Xref[0] - E_k;
 
-    printf("E_k: [%lf, %lf]\n", E_k[0], E_k[1]);
-    printf("Xref: [%lf, %lf]\n", Xref[0][0], Xref[0][1]);
-    printf("Xc_k: [%lf, %lf]\n", Xc_k[0], Xc_k[0]);
+    // printf("E_k: [%lf, %lf]\n", E_k[0], E_k[1]);
+    // printf("Xref: [%lf, %lf]\n", Xref[0][0], Xref[0][1]);
+    // printf("Xc_k: [%lf, %lf]\n", Xc_k[0], Xc_k[0]);
 
     return Xc_k;
 }

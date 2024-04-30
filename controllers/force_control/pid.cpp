@@ -15,8 +15,8 @@ PID_controller::PID_controller(double kp_, double ki_, double kd_, double T_, do
 
 double PID_controller::tracking(double setpoint, double state)
 {
-    printf("= = = In Tracking = = =\n");
-    printf("setpoint, state: [%lf, %lf]\n", setpoint, state);
+    // printf("= = = In Tracking = = =\n");
+    // printf("setpoint, state: [%lf, %lf]\n", setpoint, state);
 
     err = setpoint - state;
     err_sum += dT * err;
@@ -26,7 +26,7 @@ double PID_controller::tracking(double setpoint, double state)
     // err_dev = dev_lpf.update(err_dev);
     prev_err = err;
 
-    printf("kp, err, ki, err_sum, kd, err_dev: %lf, %lf, %lf, %lf, %lf, %lf\n", kp, err, ki, err_sum, kd, err_dev);
+    // printf("kp, err, ki, err_sum, kd, err_dev: %lf, %lf, %lf, %lf, %lf, %lf\n", kp, err, ki, err_sum, kd, err_dev);
 
     double output = 0;
     if (dev_init)
