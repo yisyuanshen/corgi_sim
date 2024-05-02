@@ -14,7 +14,7 @@ set(CMAKE_CXX_FLAGS "-std=c99 -Wno-error=deprecated-declarations -Wno-deprecated
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/common.cmake)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/build")
 
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(Eigen3 3.4 REQUIRED NO_MODULE)
 
 # generate proto file c/c++ interface
 set(PROTO_PATH "${CMAKE_CURRENT_LIST_DIR}/protos")
