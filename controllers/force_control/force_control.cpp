@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
 
     int loop_counter = 0;
     while (supervisor->step(TIME_STEP) != -1) {
-        printf(" \n= = = Loop Count %d = = =\n", loop_counter);
+        // printf(" \n= = = Loop Count %d = = =\n", loop_counter);
 
         core::spinOnce();
         mutex_.lock();
@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
                 Eigen::Vector2d phi_cmd = mod->force_tracker.controlLoop(X_d, F_d, tb_fb, trq_fb, phi_vel);
 
                 // printf(">>> After Controlloop\n");
-                printf("mod %d phi_cmd: [%lf, %lf]\n", mod_idx, phi_cmd[0], phi_cmd[1]);
+                // printf("mod %d phi_cmd: [%lf, %lf]\n", mod_idx, phi_cmd[0], phi_cmd[1]);
 
                 mod->setLegPosition(phi_cmd[0], phi_cmd[1]);
 
@@ -212,12 +212,12 @@ int main(int argc, char **argv) {
 
         corgi.update_robot_param();
         
-        printf("- - -\n");
-        printf("Position: [%lf, %lf, %lf]\n", corgi.pose_pos[0], corgi.pose_pos[1], corgi.pose_pos[2]);
-        printf("Orientation: [%lf, %lf, %lf, %lf]\n", corgi.pose_ori[0], corgi.pose_ori[1], corgi.pose_ori[2], corgi.pose_ori[3]);
-        printf("Lin Velocity: [%lf, %lf, %lf]\n", corgi.twist_lin[0], corgi.twist_lin[1], corgi.twist_lin[2]);
-        printf("Ang Velocity: [%lf, %lf, %lf]\n", corgi.twist_ang[0], corgi.twist_ang[1], corgi.twist_ang[2]);
-        printf("- - -\n");
+        // printf("- - -\n");
+        // printf("Position: [%lf, %lf, %lf]\n", corgi.pose_pos[0], corgi.pose_pos[1], corgi.pose_pos[2]);
+        // printf("Orientation: [%lf, %lf, %lf, %lf]\n", corgi.pose_ori[0], corgi.pose_ori[1], corgi.pose_ori[2], corgi.pose_ori[3]);
+        // printf("Lin Velocity: [%lf, %lf, %lf]\n", corgi.twist_lin[0], corgi.twist_lin[1], corgi.twist_lin[2]);
+        // printf("Ang Velocity: [%lf, %lf, %lf]\n", corgi.twist_ang[0], corgi.twist_ang[1], corgi.twist_ang[2]);
+        // printf("- - -\n");
 
         robot_msg::State robot_state_msg;
         robot_state_msg.mutable_pose()->mutable_position()->set_x(corgi.pose_pos[0]);
@@ -236,16 +236,16 @@ int main(int argc, char **argv) {
         robot_pub.publish(robot_state_msg);
 
 
-        printf("Mod_A Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_A->force[0], corgi.mod_A->force[1], corgi.mod_A->force[2]);
-        printf("Mod_B Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_B->force[0], corgi.mod_B->force[1], corgi.mod_B->force[2]);
-        printf("Mod_C Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_C->force[0], corgi.mod_C->force[1], corgi.mod_C->force[2]);
-        printf("Mod_D Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_D->force[0], corgi.mod_D->force[1], corgi.mod_D->force[2]);
-        printf("- - -\n");
+        // printf("Mod_A Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_A->force[0], corgi.mod_A->force[1], corgi.mod_A->force[2]);
+        // printf("Mod_B Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_B->force[0], corgi.mod_B->force[1], corgi.mod_B->force[2]);
+        // printf("Mod_C Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_C->force[0], corgi.mod_C->force[1], corgi.mod_C->force[2]);
+        // printf("Mod_D Force Estimated: [%lf, %lf, %lf]\n", corgi.mod_D->force[0], corgi.mod_D->force[1], corgi.mod_D->force[2]);
+        // printf("- - -\n");
 
-        printf("Mod_A Leg Pose: [%lf, %lf]\n", corgi.mod_A->pose[0], corgi.mod_A->pose[1]);
-        printf("Mod_B Leg Pose: [%lf, %lf]\n", corgi.mod_B->pose[0], corgi.mod_B->pose[1]);
-        printf("Mod_C Leg Pose: [%lf, %lf]\n", corgi.mod_C->pose[0], corgi.mod_C->pose[1]);
-        printf("Mod_D Leg Pose: [%lf, %lf]\n", corgi.mod_D->pose[0], corgi.mod_D->pose[1]);
+        // printf("Mod_A Leg Pose: [%lf, %lf]\n", corgi.mod_A->pose[0], corgi.mod_A->pose[1]);
+        // printf("Mod_B Leg Pose: [%lf, %lf]\n", corgi.mod_B->pose[0], corgi.mod_B->pose[1]);
+        // printf("Mod_C Leg Pose: [%lf, %lf]\n", corgi.mod_C->pose[0], corgi.mod_C->pose[1]);
+        // printf("Mod_D Leg Pose: [%lf, %lf]\n", corgi.mod_D->pose[0], corgi.mod_D->pose[1]);
 
         force_msg::LegForceStamped force_state_msg;
         force_msg::LegForce force_state;
