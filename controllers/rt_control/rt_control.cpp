@@ -56,13 +56,28 @@ int main(int argc, char **argv) {
                     left_phi_cmd *= -1;
                 }
 
-                std::cout << right_phi_cmd << ", " << left_phi_cmd << std::endl;
+                // std::cout << right_phi_cmd << ", " << left_phi_cmd << std::endl;
                 mod->setLegPosition(right_phi_cmd, left_phi_cmd);
                 mod_idx += 1;
+                
+                mod->update_leg_param();
             }
         }
 
         mutex_.unlock();
+
+        corgi.update_robot_param();
+
+        for (auto& mod: corgi.leg_mods){
+            double phi_r = mod->right_encoder->getValue();
+            double phi_l = mod->left_encoder->getValue();
+            double theta = (phi_r - phi_l) / 2 + 17.0 / 180 * PI;
+            double beta = (phi_r + phi_l) / 2;
+
+            printf("\nphi = (%lf, %lf), tb = (%lf, %lf), torque = (%lf, %lf), force = %lf\n",
+                    phi_r, phi_l, theta, beta, mod->right_motor_torque, mod->left_motor_torque, mod->force[2]);
+        }
+
         ticker.tick(loop_counter*1000);
         supervisor->step(1);
 

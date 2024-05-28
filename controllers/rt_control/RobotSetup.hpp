@@ -11,6 +11,8 @@
 #include <webots/InertialUnit.hpp>
 #include <webots/Gyro.hpp>
 #include <webots/DistanceSensor.hpp>
+#include <Eigen/Dense>
+
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -28,8 +30,22 @@ class LegModule{
         PositionSensor *left_encoder;
         DistanceSensor *dist_sensor;
         TouchSensor *force_sensor;
-        
+        Node *force_sensor_node;
+
+        double right_motor_position = 0.0;
+        double right_motor_last_position = 0.0;
+        double right_motor_velocity = 0.0;
+        double right_motor_torque = 0.0;
+        double left_motor_position = 0.0;
+        double left_motor_last_position = 0.0;
+        double left_motor_velocity = 0.0;
+        double left_motor_torque = 0.0;
+
+        Eigen::Vector3d force;
+        Eigen::Vector2d pose;
+
         void setLegPosition(double right_phi_cmd, double left_phi_cmd);
+        void update_leg_param();
 };
 
 
@@ -43,15 +59,19 @@ class Corgi{
         
         std::vector<LegModule*> leg_mods;
 
-        Corgi()
-        : mod_A(new LegModule), 
-          mod_B(new LegModule), 
-          mod_C(new LegModule), 
-          mod_D(new LegModule), 
-          leg_mods{mod_A, mod_B, mod_C, mod_D} {}
+        Corgi():
+            mod_A(new LegModule), 
+            mod_B(new LegModule), 
+            mod_C(new LegModule), 
+            mod_D(new LegModule), 
+            leg_mods{mod_A, mod_B, mod_C, mod_D} {}
 
+        const double* pose_pos;
+        const double* pose_ori;
+        const double* twist_lin;
+        const double* twist_ang;
 
         void robot_initialize(Supervisor *supervisor);
-
+        void update_robot_param();
 };
 #endif
