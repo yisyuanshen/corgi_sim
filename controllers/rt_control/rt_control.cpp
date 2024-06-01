@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
         }
 
         ticker.tick(loop_counter*1000);
-        supervisor->step(1);
+        // supervisor->step(1);
 
         loop_counter++;
     };
