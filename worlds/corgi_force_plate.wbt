@@ -8,9 +8,6 @@ WorldInfo {
   basicTimeStep 1
   contactProperties [
     ContactProperties {
-      coulombFriction [
-        10
-      ]
     }
   ]
 }
@@ -2464,7 +2461,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF RF_lmotorbar Solid {
         translation 0.20001520581106608 6.85411925914234e-05 0.14999903248486723
-        rotation -4.725799316822618e-09 0.9999999999387919 -1.1064205302063098e-05 3.141636699015134
+        rotation -4.72579931682262e-09 0.9999999999387919 -1.1064205302063101e-05 3.141636699015134
         children [
           USE group_lmotorbar
           DEF RF_Ll5l6 HingeJoint {
@@ -2727,7 +2724,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF RH_lmotorbar Solid {
         translation -0.19999988784269948 -8.326182671340209e-07 0.15000034530646555
-        rotation 3.999543436497222e-09 -0.9999999999996939 -7.824504986449923e-07 3.1416010444467073
+        rotation 3.999543436497224e-09 -0.9999999999996939 -7.824504986449921e-07 3.1416010444467073
         children [
           USE group_lmotorbar
           DEF RH_Ll5l6 HingeJoint {
@@ -2879,6 +2876,7 @@ Robot {
             mass 1
           }
           type "force-3d"
+          lookupTable []
         }
       ]
       name "Plate"
@@ -2913,6 +2911,7 @@ Robot {
             mass 1
           }
           type "force-3d"
+          lookupTable []
         }
       ]
       name "Plate"
@@ -2947,6 +2946,7 @@ Robot {
             mass 1
           }
           type "force-3d"
+          lookupTable []
         }
       ]
       name "Plate"
@@ -2981,6 +2981,7 @@ Robot {
             mass 1
           }
           type "force-3d"
+          lookupTable []
         }
       ]
       name "Plate"

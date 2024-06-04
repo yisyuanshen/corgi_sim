@@ -35,6 +35,16 @@ int main(int argc, char **argv) {
 
     corgi.robot_initialize(supervisor);
 
+    std::ofstream output_file("output_robot.csv", std::ios::out | std::ios::trunc);
+    int save_file = 1;
+
+    if (save_file){
+        output_file << "Time,A_phi_r,A_phi_l,A_trq_r,A_trq_l," << 
+                       "B_phi_r,B_phi_l,B_trq_r,B_trq_l," <<
+                       "C_phi_r,C_phi_l,C_trq_r,C_trq_l," <<
+                       "D_phi_r,D_phi_l,D_trq_r,D_trq_l," << std::endl;
+    }
+    
     supervisor->step(1000);
 
     int loop_counter = 0;
@@ -68,6 +78,7 @@ int main(int argc, char **argv) {
 
         corgi.update_robot_param();
 
+        if (save_file) output_file << round(supervisor->getTime()*1000)/1000.0 << ",";
         for (auto& mod: corgi.leg_mods){
             double phi_r = mod->right_encoder->getValue();
             double phi_l = mod->left_encoder->getValue();
@@ -76,12 +87,16 @@ int main(int argc, char **argv) {
 
             printf("\nphi = (%lf, %lf), tb = (%lf, %lf), torque = (%lf, %lf), force = %lf\n",
                     phi_r, phi_l, theta, beta, mod->right_motor_torque, mod->left_motor_torque, mod->force[2]);
+            
+            if (save_file) output_file << phi_r << "," << phi_l << "," << mod->right_motor_torque << "," << mod->left_motor_torque << ",";
         }
+        if (save_file) output_file << std::endl;
 
         ticker.tick(loop_counter*1000);
         // supervisor->step(1);
 
         loop_counter++;
+        if (loop_counter >= 1e+5) break;
     };
 
     return 0;

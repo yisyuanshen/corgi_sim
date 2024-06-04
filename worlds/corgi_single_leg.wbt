@@ -12,8 +12,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.10011976519295625 -0.047237120713001284 0.9938534535053206 4.018550073101638
-  position 0.9055775453250522 1.2131272691946082 0.420329912995802
+  orientation -0.13959442500344532 -0.0701807576593775 0.9877186126434557 4.06341762387241
+  position 1.0041194753253866 1.497629023277255 0.6012201902895226
 }
 TexturedBackground {
 }
@@ -1913,33 +1913,29 @@ Solid {
   name "Robot Slider"
 }
 Robot {
+  translation 0 0.1 0.01
   children [
-    Solid {
+    TouchSensor {
       children [
-        TouchSensor {
-          translation 0 0.1 0.005
-          children [
-            Shape {
-              appearance PBRAppearance {
-                baseColor 0.7 0.7 0.7
-                metalness 0.2
-              }
-              geometry Box {
-                size 0.4 0.3 0.01
-              }
-            }
-          ]
-          name "force plate"
-          boundingObject Box {
-            size 0.4 0.3 0.01
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.7 0.7 0.7
+            metalness 0.2
           }
-          physics Physics {
-            mass 1
+          geometry Box {
+            size 0.6 0.4 0.01
           }
-          type "force-3d"
         }
       ]
-      name "Plate"
+      name "force plate"
+      boundingObject Box {
+        size 0.6 0.4 0.01
+      }
+      physics Physics {
+        mass 1
+      }
+      type "force-3d"
+      lookupTable []
     }
   ]
   name "Force Plate"

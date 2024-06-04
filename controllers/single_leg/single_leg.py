@@ -21,6 +21,12 @@ force_sensor.enable(1)
 dist_sensor = supervisor.getDevice('dst_lf')
 dist_sensor.enable(1)
 
+save_file = True
+
+if save_file: 
+    with open(f'output_leg.csv', 'w', newline='') as file:
+        file.write(f'Time,phi_r,phi_l,trq_r,trq_l\n')
+
 supervisor.step(1000)
 
 loop_count = 0.0
@@ -48,6 +54,10 @@ while supervisor.step(timestep) != -1:
     print(f'    trq = [{motor_r.getTorqueFeedback()}, {motor_l.getTorqueFeedback()}]')
     
     print(f'Dist: {dist_sensor.getValue()}')
+    
+    if save_file: 
+        with open(f'output_leg.csv', 'a', newline='') as file:
+            file.write(f'{round(supervisor.getTime(), 3)},{encoder_r.getValue()},{encoder_l.getValue()},{motor_r.getTorqueFeedback()},{motor_l.getTorqueFeedback()}\n')
 
     # print(f'World Force = [{force_world[0]}, {force_world[1]}, {force_world[2]}]')
     
