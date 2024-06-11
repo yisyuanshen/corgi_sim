@@ -38,6 +38,12 @@ void Corgi::robot_initialize(Supervisor *supervisor){
         mod->right_motor->enableTorqueFeedback(1);
         mod->left_motor->enableTorqueFeedback(1);
 
+        double kp = 30;
+        double ki = 0;
+        double kd = 0;
+        mod->right_motor->setControlPID(kp, ki, kd);
+        mod->left_motor->setControlPID(kp, ki, kd);
+
         mod->right_encoder = mod->right_motor->getPositionSensor();
         mod->right_encoder->enable(1);
         mod->left_encoder = mod->left_motor->getPositionSensor();

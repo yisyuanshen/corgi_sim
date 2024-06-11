@@ -76,8 +76,8 @@ Solid {
             device [
               DEF lf_right_motor RotationalMotor {
                 name "lf_right_motor"
-                maxVelocity 100
-                maxTorque 100
+                maxVelocity 35
+                maxTorque 35
               }
               PositionSensor {
                 name "lf_right_motor_sensor"
@@ -1031,8 +1031,8 @@ Solid {
             device [
               DEF lf_left_motor RotationalMotor {
                 name "lf_left_motor"
-                maxVelocity 100
-                maxTorque 100
+                maxVelocity 35
+                maxTorque 35
               }
               PositionSensor {
                 name "lf_left_motor_sensor"
