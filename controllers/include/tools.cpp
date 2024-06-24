@@ -29,3 +29,23 @@ vector<vector<double>> read_csv(string input_filename){
     return data;
 }
 
+
+void write_csv(const std::string& output_filename, const std::vector<std::vector<std::string>>& data) {
+    std::ofstream output_file(output_filename);
+    
+    if (!output_file.is_open()) {
+        std::cerr << "Could not open the output file: " << output_filename << std::endl;
+        return;
+    }
+
+    for (const auto& row : data) {
+        for (size_t i = 0; i < row.size(); ++i) {
+            output_file << row[i];
+            if (i != row.size() - 1) output_file << ",";
+        }
+        output_file << "\n";
+    }
+
+    output_file.close();
+    std::cout << "Data successfully written to " << output_filename << std::endl;
+}

@@ -33,15 +33,23 @@ loop_count = 0.0
 while supervisor.step(timestep) != -1:
     print(f'\n= = = = = Loop Count: {int(loop_count)} = = = = =')
     
-    # if loop_count < 2000:
-        # theta = 17 + 100 / 2000 * loop_count
+    if loop_count < 1000:
+        theta = 17
+        beta = 0 / 1000 * loop_count
+    elif loop_count < 5000:
+        theta = 17 + 100 / 4000 * (loop_count-1000)
+        beta = 0
+    # elif loop_count < 15000:
+        # theta = 117
         # beta = 0
     # else:
-        # theta = 17 + 50 * (np.cos((loop_count-2000)/1000*np.pi)+1)
-        # beta = 50 * (-np.cos((loop_count-2000)/2000*np.pi)+1)
+        # break
+    else:
+        theta = 17 + 50 * (np.cos((loop_count-5000)/1000*np.pi)+1)
+        beta = 50 * (-np.cos((loop_count-5000)/2000*np.pi)+1)
     
-    theta = 60
-    beta = 0
+    # theta = 60 # 17 + 50 * (-np.cos((loop_count)/3000*np.pi)+1)
+    # beta = 90
     
     phi_r = np.deg2rad(beta+theta-17)
     phi_l = np.deg2rad(beta-theta+17)

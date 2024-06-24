@@ -79,6 +79,7 @@ Solid {
             device [
               DEF lf_right_motor RotationalMotor {
                 name "lf_right_motor"
+                controlPID 30 0 0
                 maxVelocity 35
                 maxTorque 35
               }
@@ -87,8 +88,8 @@ Solid {
               }
             ]
             endPoint DEF LF_rmotorbar Solid {
-              translation -2.495594715937984e-07 -1.8415794339591943e-07 -0.09999854172849772
-              rotation 0.9045514836853027 -0.4263644138090298 -6.260251194700576e-09 1.3978528260658475e-07
+              translation -2.495594715937984e-07 -1.8415794339591954e-07 -0.09999854172849772
+              rotation 0.904551483685303 -0.426364413809029 -6.664001874625057e-09 6.664001874625056e-08
               children [
                 DEF group_rmotorbar Group {
                   children [
@@ -225,7 +226,7 @@ Solid {
                     anchor 0.0233897 0.0765044 0
                   }
                   endPoint DEF LF_rl5l6 Solid {
-                    translation 3.469446951953614e-18 0 0
+                    translation 2.0816681711721685e-17 1.3877787807814457e-17 0
                     children [
                       DEF group_rl5l6 Group {
                         children [
@@ -362,7 +363,7 @@ Solid {
                           anchor 0.00719684 -0.0120269 0
                         }
                         endPoint DEF LF_rl4 Solid {
-                          translation 4.336808689942018e-18 -8.673617379884035e-18 0
+                          translation 8.673617379884035e-19 -8.673617379884035e-18 0
                           children [
                             DEF group_rl4 Group {
                               children [
@@ -498,7 +499,7 @@ Solid {
                           boundingObject USE group_rl4
                           physics Physics {
                             density -1
-                            mass 0.007038
+                            mass 1e-05
                           }
                         }
                       }
@@ -507,7 +508,7 @@ Solid {
                     boundingObject USE group_rl5l6
                     physics Physics {
                       density -1
-                      mass 0.057487
+                      mass 1e-05
                     }
                   }
                 }
@@ -517,7 +518,7 @@ Solid {
                     anchor 0.0292372 0.0956305 0
                   }
                   endPoint DEF LF_rupframe Solid {
-                    translation -3.469446951953614e-18 4.163336342344337e-17 0
+                    translation -7.979727989493313e-17 -2.636779683484747e-16 0
                     children [
                       DEF group_rupframe Group {
                         children [
@@ -779,7 +780,7 @@ Solid {
                           anchor 0.0766044 -0.0642788 0
                         }
                         endPoint DEF LF_rdownframe Solid {
-                          translation 2.7755575615628914e-17 0 0
+                          translation 6.938893903907228e-17 -4.163336342344337e-17 0
                           children [
                             DEF LF_force_sensor TouchSensor {
                               translation 0 -0.1 0
@@ -801,7 +802,7 @@ Solid {
                               boundingObject USE SENSOR_SHAPE
                               physics Physics {
                                 density -1
-                                mass 0.01
+                                mass 1e-05
                               }
                               type "force-3d"
                               lookupTable []
@@ -1004,7 +1005,7 @@ Solid {
                           boundingObject USE group_rdownframe
                           physics Physics {
                             density -1
-                            mass 0.079455
+                            mass 1e-05
                           }
                         }
                       }
@@ -1013,7 +1014,7 @@ Solid {
                     boundingObject USE group_rupframe
                     physics Physics {
                       density -1
-                      mass 0.176851
+                      mass 1e-05
                     }
                   }
                 }
@@ -1022,7 +1023,7 @@ Solid {
               boundingObject USE group_rmotorbar
               physics Physics {
                 density -1
-                mass 0.057215
+                mass 1e-05
               }
             }
           }
@@ -1034,6 +1035,7 @@ Solid {
             device [
               DEF lf_left_motor RotationalMotor {
                 name "lf_left_motor"
+                controlPID 30 0 0
                 maxVelocity 35
                 maxTorque 35
               }
@@ -1042,8 +1044,8 @@ Solid {
               }
             ]
             endPoint DEF LF_lmotorbar Solid {
-              translation 6.449197823519229e-07 1.0070033637928372e-07 -0.09999848709765695
-              rotation 0.8414137576624388 0.5403914214866614 1.502766786472637e-08 1.632340423778195e-07
+              translation 6.449197823519221e-07 1.0070033637928367e-07 -0.09999848709765695
+              rotation 0.8414137576624363 0.5403914214866601 7.674098014831553e-08 1.490116119384766e-07
               children [
                 DEF group_lmotorbar Group {
                   children [
@@ -1175,7 +1177,7 @@ Solid {
                     anchor -0.0233897 0.0765044 0
                   }
                   endPoint DEF LF_ll5l6 Solid {
-                    translation 1.0408340855860843e-17 0 0
+                    translation 0 -4.163336342344337e-17 0
                     children [
                       DEF group_ll5l6 Group {
                         children [
@@ -1286,7 +1288,7 @@ Solid {
                           anchor -0.00719684 -0.0120269 0
                         }
                         endPoint DEF LF_ll4 Solid {
-                          translation 2.6020852139652106e-18 6.938893903907228e-18 0
+                          translation -1.474514954580286e-17 -2.6020852139652106e-17 0
                           children [
                             DEF group_ll4 Group {
                               children [
@@ -1422,7 +1424,7 @@ Solid {
                           boundingObject USE group_ll4
                           physics Physics {
                             density -1
-                            mass 0.007038
+                            mass 1e-05
                           }
                         }
                       }
@@ -1431,7 +1433,7 @@ Solid {
                     boundingObject USE group_ll5l6
                     physics Physics {
                       density -1
-                      mass 0.051589
+                      mass 1e-05
                     }
                   }
                 }
@@ -1441,7 +1443,7 @@ Solid {
                     anchor -0.0292372 0.0956305 0
                   }
                   endPoint DEF LF_lupframe Solid {
-                    translation -1.734723475976807e-17 1.3877787807814457e-17 0
+                    translation -6.245004513516506e-17 4.163336342344337e-17 0
                     children [
                       DEF group_lupframe Group {
                         children [
@@ -1703,7 +1705,7 @@ Solid {
                           anchor -0.0766044 -0.0642788 0
                         }
                         endPoint DEF LF_ldownframe Solid {
-                          translation 0 -1.3877787807814457e-17 0
+                          translation 6.938893903907228e-17 1.249000902703301e-16 0
                           children [
                             DEF group_ldowframe Group {
                               children [
@@ -1878,7 +1880,7 @@ Solid {
                           boundingObject USE group_ldowframe
                           physics Physics {
                             density -1
-                            mass 0.071793
+                            mass 1e-05
                           }
                         }
                       }
@@ -1887,7 +1889,7 @@ Solid {
                     boundingObject USE group_lupframe
                     physics Physics {
                       density -1
-                      mass 0.176851
+                      mass 1e-05
                     }
                   }
                 }
@@ -1896,7 +1898,7 @@ Solid {
               boundingObject USE group_lmotorbar
               physics Physics {
                 density -1
-                mass 0.05611
+                mass 1e-05
               }
             }
           }

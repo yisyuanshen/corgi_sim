@@ -8,6 +8,9 @@ WorldInfo {
   basicTimeStep 1
   contactProperties [
     ContactProperties {
+      coulombFriction [
+        0
+      ]
     }
   ]
 }
@@ -2884,7 +2887,7 @@ DEF CORGI Robot {
       0 0 0
     ]
   }
-  controller "force_control"
+  controller "rt_control"
   controllerArgs [
     ""
   ]

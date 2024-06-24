@@ -229,6 +229,7 @@ DEF CORGI Robot {
       device [
         DEF lf_right_motor RotationalMotor {
           name "lf_right_motor"
+          controlPID 30 0 0
           maxVelocity 100
           maxTorque 100
         }
@@ -1184,6 +1185,7 @@ DEF CORGI Robot {
       device [
         DEF lf_left_motor RotationalMotor {
           name "lf_left_motor"
+          controlPID 30 0 0
           maxVelocity 100
           maxTorque 100
         }
@@ -2058,6 +2060,7 @@ DEF CORGI Robot {
       device [
         DEF lh_right_motor RotationalMotor {
           name "lh_right_motor"
+          controlPID 30 0 0
           maxVelocity 100
           maxTorque 100
         }
@@ -2193,6 +2196,7 @@ DEF CORGI Robot {
       device [
         DEF lh_left_motor RotationalMotor {
           name "lh_left_motor"
+          controlPID 30 0 0
           maxVelocity 100
           maxTorque 100
         }
@@ -2321,6 +2325,7 @@ DEF CORGI Robot {
       device [
         DEF rf_right_motor RotationalMotor {
           name "rf_right_motor"
+          controlPID 30 0 0
           maxVelocity 100
           maxTorque 100
         }
@@ -2456,6 +2461,7 @@ DEF CORGI Robot {
       device [
         DEF rf_left_motor RotationalMotor {
           name "rf_left_motor"
+          controlPID 30 0 0
           maxVelocity 100
           maxTorque 100
         }
@@ -2465,7 +2471,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF RF_lmotorbar Solid {
         translation 0.20001520581176316 6.854119243678722e-05 0.14999903248486723
-        rotation 3.5893460434798916e-10 0.9999999999387917 -1.1064205190081705e-05 3.141636699015246
+        rotation 3.5893460434798875e-10 0.9999999999387917 -1.1064205190081712e-05 3.141636699015246
         children [
           USE group_lmotorbar
           DEF RF_Ll5l6 HingeJoint {
@@ -2584,6 +2590,7 @@ DEF CORGI Robot {
       device [
         DEF rh_right_motor RotationalMotor {
           name "rh_right_motor"
+          controlPID 30 0 0
           maxVelocity 100
           maxTorque 100
         }
@@ -2719,6 +2726,7 @@ DEF CORGI Robot {
       device [
         DEF rh_left_motor RotationalMotor {
           name "rh_left_motor"
+          controlPID 30 0 0
           maxVelocity 100
           maxTorque 100
         }
@@ -2728,7 +2736,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF RH_lmotorbar Solid {
         translation -0.19999988784270625 -8.326182680302843e-07 0.15000034530646555
-        rotation 4.444888901428361e-12 -0.9999999999996939 -7.824504818842626e-07 3.14160104444671
+        rotation 4.444888901428358e-12 -0.9999999999996939 -7.824504818842621e-07 3.14160104444671
         children [
           USE group_lmotorbar
           DEF RH_Ll5l6 HingeJoint {
@@ -2848,9 +2856,9 @@ DEF CORGI Robot {
       0 0 0
     ]
   }
-  controller "force_control"
+  controller "csv_control"
   controllerArgs [
-    ""
+    "output.csv input_csv/test.csv"
   ]
   supervisor TRUE
 }

@@ -63,7 +63,8 @@ link_directories(${WEBOTS_HOME}/lib/controller)
 set (LIBRARIES m ${CMAKE_SHARED_LIBRARY_PREFIX}Controller${CMAKE_SHARED_LIBRARY_SUFFIX} ${CMAKE_SHARED_LIBRARY_PREFIX}CppController${CMAKE_SHARED_LIBRARY_SUFFIX})
 include_directories(${WEBOTS_HOME}/include/controller/c ${WEBOTS_HOME}/include/controller/cpp)
 
-add_library(RobotSetup RobotSetup.cpp tools.cpp)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/../include)
+add_library(RobotSetup ${CMAKE_CURRENT_LIST_DIR}/../include/RobotSetup.cpp ${CMAKE_CURRENT_LIST_DIR}/../include/tools.cpp)
 target_link_libraries(RobotSetup Eigen3::Eigen)
 
 # Setup the target executable.
