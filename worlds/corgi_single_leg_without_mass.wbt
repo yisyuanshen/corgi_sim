@@ -15,8 +15,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.13959442500344532 -0.0701807576593775 0.9877186126434557 4.06341762387241
-  position 1.0041194753253866 1.497629023277255 0.6012201902895226
+  orientation -0.15918816881081158 -0.08103135839934367 0.9839171946188447 4.070252641790064
+  position 0.9782600810676798 1.4927924810450088 0.6730982056502375
 }
 TexturedBackground {
 }
@@ -31,7 +31,7 @@ Solid {
       jointParameters JointParameters {
       }
       endPoint DEF CORGI Robot {
-        translation 0 0 0.2
+        translation 0 0 0.19999999999999996
         rotation 1 0 0 1.5708
         children [
           DEF BASE Shape {
@@ -89,7 +89,7 @@ Solid {
             ]
             endPoint DEF LF_rmotorbar Solid {
               translation -2.495594715937984e-07 -1.8415794339591954e-07 -0.09999854172849772
-              rotation 0.904551483685303 -0.426364413809029 -6.664001874625057e-09 6.664001874625056e-08
+              rotation 0.904551483685303 -0.42636441380902895 -6.664001874625057e-09 6.664001874625056e-08
               children [
                 DEF group_rmotorbar Group {
                   children [
@@ -499,7 +499,7 @@ Solid {
                           boundingObject USE group_rl4
                           physics Physics {
                             density -1
-                            mass 1e-05
+                            mass 0.0001
                           }
                         }
                       }
@@ -508,7 +508,7 @@ Solid {
                     boundingObject USE group_rl5l6
                     physics Physics {
                       density -1
-                      mass 1e-05
+                      mass 0.0001
                     }
                   }
                 }
@@ -802,7 +802,7 @@ Solid {
                               boundingObject USE SENSOR_SHAPE
                               physics Physics {
                                 density -1
-                                mass 1e-05
+                                mass 0.0001
                               }
                               type "force-3d"
                               lookupTable []
@@ -1005,7 +1005,7 @@ Solid {
                           boundingObject USE group_rdownframe
                           physics Physics {
                             density -1
-                            mass 1e-05
+                            mass 0.0001
                           }
                         }
                       }
@@ -1014,7 +1014,7 @@ Solid {
                     boundingObject USE group_rupframe
                     physics Physics {
                       density -1
-                      mass 1e-05
+                      mass 0.0001
                     }
                   }
                 }
@@ -1023,7 +1023,7 @@ Solid {
               boundingObject USE group_rmotorbar
               physics Physics {
                 density -1
-                mass 1e-05
+                mass 0.0001
               }
             }
           }
@@ -1424,7 +1424,7 @@ Solid {
                           boundingObject USE group_ll4
                           physics Physics {
                             density -1
-                            mass 1e-05
+                            mass 0.0001
                           }
                         }
                       }
@@ -1433,7 +1433,7 @@ Solid {
                     boundingObject USE group_ll5l6
                     physics Physics {
                       density -1
-                      mass 1e-05
+                      mass 0.0001
                     }
                   }
                 }
@@ -1880,7 +1880,7 @@ Solid {
                           boundingObject USE group_ldowframe
                           physics Physics {
                             density -1
-                            mass 1e-05
+                            mass 0.0001
                           }
                         }
                       }
@@ -1889,7 +1889,7 @@ Solid {
                     boundingObject USE group_lupframe
                     physics Physics {
                       density -1
-                      mass 1e-05
+                      mass 0.0001
                     }
                   }
                 }
@@ -1898,7 +1898,7 @@ Solid {
               boundingObject USE group_lmotorbar
               physics Physics {
                 density -1
-                mass 1e-05
+                mass 0.0001
               }
             }
           }

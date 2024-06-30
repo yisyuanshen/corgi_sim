@@ -30,26 +30,37 @@ if save_file:
 supervisor.step(1000)
 
 loop_count = 0.0
+theta = 17
+beta = 0
+
 while supervisor.step(timestep) != -1:
     print(f'\n= = = = = Loop Count: {int(loop_count)} = = = = =')
     
-    if loop_count < 1000:
-        theta = 17
-        beta = 0 / 1000 * loop_count
-    elif loop_count < 5000:
-        theta = 17 + 100 / 4000 * (loop_count-1000)
-        beta = 0
-    # elif loop_count < 15000:
-        # theta = 117
+    # if loop_count < 1000:
+        # theta = 50
         # beta = 0
+    # elif loop_count < 5000:
+        # theta = 50 #+ 100 / 4000 * (loop_count-1000)
+        # beta = 100 / 4000 * (loop_count-1000)
+    # elif loop_count < 15000:
+        # theta = 50
+        # beta = 100
     # else:
         # break
-    else:
-        theta = 17 + 50 * (np.cos((loop_count-5000)/1000*np.pi)+1)
-        beta = 50 * (-np.cos((loop_count-5000)/2000*np.pi)+1)
     
-    # theta = 60 # 17 + 50 * (-np.cos((loop_count)/3000*np.pi)+1)
-    # beta = 90
+    time_interval = 2000
+    
+    if loop_count < time_interval * 1: pass
+    elif loop_count < time_interval * 2: theta += 30 / time_interval
+    elif loop_count < time_interval * 3: pass
+    elif loop_count < time_interval * 4: theta -= 30 / time_interval
+    elif loop_count < time_interval * 5: beta += 30 / time_interval
+    elif loop_count < time_interval * 6: theta += 30 / time_interval
+    elif loop_count < time_interval * 7: pass
+    elif loop_count < time_interval * 8: beta += 60 / time_interval
+    elif loop_count < time_interval * 9: theta += 30 / time_interval
+    elif loop_count < time_interval * 10: pass
+    else: break
     
     phi_r = np.deg2rad(beta+theta-17)
     phi_l = np.deg2rad(beta-theta+17)
