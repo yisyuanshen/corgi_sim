@@ -58,7 +58,7 @@ while supervisor.step(timestep) != -1:
     print(f'= = = = = Loop Count: {loop_count} = = = = =')
     
     '''
-    theta = 60
+    theta = 120
     
     if state == 0:
         if loop_count % 3000 >= 2000: beta += 0.02
@@ -73,16 +73,19 @@ while supervisor.step(timestep) != -1:
         break
     '''
     
-    beta = 30
+    # '''
+    beta = 40
     
     if state == 0:
         if loop_count % 3000 >= 2000: theta += 0.02
-        if theta > 120: state += 1
+        if theta > 117: state += 1
     elif state == 1:
         if loop_count % 3000 >= 2000: theta -= 0.02
         if theta <= 17: state += 1
     else:
         break
+    # '''
+    
     
     phi_r = np.deg2rad(beta+theta-17)
     phi_l = np.deg2rad(beta-theta+17)

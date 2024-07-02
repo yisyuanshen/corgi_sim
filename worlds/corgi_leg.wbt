@@ -9,7 +9,7 @@ WorldInfo {
   contactProperties [
     ContactProperties {
       coulombFriction [
-        10
+        0
       ]
     }
   ]
