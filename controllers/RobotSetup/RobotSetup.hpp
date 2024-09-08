@@ -70,8 +70,10 @@ class Corgi{
         const double* pose_ori;
         const double* twist_lin;
         const double* twist_ang;
+        const double* acc_pos;
 
         void robot_initialize(Supervisor *supervisor);
+        void set_leg_mass(Supervisor *supervisor, int enable);
         void update_robot_param();
 };
 #endif

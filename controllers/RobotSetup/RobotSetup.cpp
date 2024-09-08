@@ -1,6 +1,8 @@
 #include "RobotSetup.hpp"
 
 void Corgi::robot_initialize(Supervisor *supervisor){
+    set_leg_mass(supervisor, 1);
+
     this->robot_node = supervisor->getFromDef("CORGI");
     this->robot_node->enableContactPointsTracking(1);
     this->imu = supervisor->getAccelerometer("imu");
@@ -12,25 +14,25 @@ void Corgi::robot_initialize(Supervisor *supervisor){
 
     this->mod_A->right_motor = supervisor->getMotor("lf_right_motor");
     this->mod_A->left_motor = supervisor->getMotor("lf_left_motor");
-    // this->mod_A->dist_sensor = supervisor->getDistanceSensor("dst_lf");
+    this->mod_A->dist_sensor = supervisor->getDistanceSensor("dst_lf");
     // this->mod_A->force_sensor = supervisor->getTouchSensor("force_lf");
     // this->mod_A->force_sensor_node = supervisor->getFromDef("LF_force_sensor");
 
     this->mod_B->right_motor = supervisor->getMotor("rf_left_motor");
     this->mod_B->left_motor = supervisor->getMotor("rf_right_motor");
-    // this->mod_B->dist_sensor = supervisor->getDistanceSensor("dst_rf");
+    this->mod_B->dist_sensor = supervisor->getDistanceSensor("dst_rf");
     // this->mod_B->force_sensor = supervisor->getTouchSensor("force_rf");
     // this->mod_B->force_sensor_node = supervisor->getFromDef("RF_force_sensor");
 
     this->mod_C->right_motor = supervisor->getMotor("rh_left_motor");
     this->mod_C->left_motor = supervisor->getMotor("rh_right_motor");
-    // this->mod_C->dist_sensor = supervisor->getDistanceSensor("dst_rh");
+    this->mod_C->dist_sensor = supervisor->getDistanceSensor("dst_rh");
     // this->mod_C->force_sensor = supervisor->getTouchSensor("force_rh");
     // this->mod_C->force_sensor_node = supervisor->getFromDef("RH_force_sensor");
 
     this->mod_D->right_motor = supervisor->getMotor("lh_right_motor");
     this->mod_D->left_motor = supervisor->getMotor("lh_left_motor");
-    // this->mod_D->dist_sensor = supervisor->getDistanceSensor("dst_lh");
+    this->mod_D->dist_sensor = supervisor->getDistanceSensor("dst_lh");
     // this->mod_D->force_sensor = supervisor->getTouchSensor("force_lh");
     // this->mod_D->force_sensor_node = supervisor->getFromDef("LH_force_sensor");
 
@@ -49,8 +51,102 @@ void Corgi::robot_initialize(Supervisor *supervisor){
         mod->left_encoder = mod->left_motor->getPositionSensor();
         mod->left_encoder->enable(1);
 
-        // mod->dist_sensor->enable(1);
+        mod->dist_sensor->enable(1);
         // mod->force_sensor->enable(1);
+    }
+}
+
+
+void Corgi::set_leg_mass(Supervisor *supervisor, int enable){
+    if (!enable){
+        supervisor->getFromDef("LF_rl4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_rl5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_rdownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_rupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_rmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_ll4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_ll5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_ldownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_lupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LF_lmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+
+        supervisor->getFromDef("RF_rl4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_rl5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_rdownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_rupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_rmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_ll4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_ll5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_ldownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_lupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RF_lmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        
+        supervisor->getFromDef("RH_rl4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_rl5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_rdownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_rupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_rmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_ll4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_ll5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_ldownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_lupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("RH_lmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+
+        supervisor->getFromDef("LH_rl4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_rl5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_rdownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_rupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_rmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_ll4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_ll5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_ldownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_lupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+        supervisor->getFromDef("LH_lmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.001);
+    }
+    else{
+        supervisor->getFromDef("LF_rl4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0145704);
+        supervisor->getFromDef("LF_ll4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0145704);
+        supervisor->getFromDef("LF_rl5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0364259);
+        supervisor->getFromDef("LF_ll5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0364259);
+        supervisor->getFromDef("LF_rupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.112321);
+        supervisor->getFromDef("LF_lupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.112321);
+        supervisor->getFromDef("LF_rdownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.052707);
+        supervisor->getFromDef("LF_ldownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.052707);
+        supervisor->getFromDef("LF_rmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.047);
+        supervisor->getFromDef("LF_lmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.046);
+
+        supervisor->getFromDef("RF_rl4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0145704);
+        supervisor->getFromDef("RF_ll4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0145704);
+        supervisor->getFromDef("RF_rl5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0364259);
+        supervisor->getFromDef("RF_ll5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0364259);
+        supervisor->getFromDef("RF_rupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.112321);
+        supervisor->getFromDef("RF_lupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.112321);
+        supervisor->getFromDef("RF_rdownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.052707);
+        supervisor->getFromDef("RF_ldownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.052707);
+        supervisor->getFromDef("RF_rmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.047);
+        supervisor->getFromDef("RF_lmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.046);
+
+        supervisor->getFromDef("RH_rl4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0145704);
+        supervisor->getFromDef("RH_ll4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0145704);
+        supervisor->getFromDef("RH_rl5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0364259);
+        supervisor->getFromDef("RH_ll5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0364259);
+        supervisor->getFromDef("RH_rupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.112321);
+        supervisor->getFromDef("RH_lupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.112321);
+        supervisor->getFromDef("RH_rdownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.052707);
+        supervisor->getFromDef("RH_ldownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.052707);
+        supervisor->getFromDef("RH_rmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.047);
+        supervisor->getFromDef("RH_lmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.046);
+
+        supervisor->getFromDef("LH_rl4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0145704);
+        supervisor->getFromDef("LH_ll4")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0145704);
+        supervisor->getFromDef("LH_rl5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0364259);
+        supervisor->getFromDef("LH_ll5l6")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.0364259);
+        supervisor->getFromDef("LH_rupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.112321);
+        supervisor->getFromDef("LH_lupframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.112321);
+        supervisor->getFromDef("LH_rdownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.052707);
+        supervisor->getFromDef("LH_ldownframe")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.052707);
+        supervisor->getFromDef("LH_rmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.047);
+        supervisor->getFromDef("LH_lmotorbar")->getField("physics")->getSFNode()->getField("mass")->setSFFloat(0.046);
     }
 }
 
@@ -60,6 +156,7 @@ void Corgi::update_robot_param(){
     this->pose_ori = this->gyro->getQuaternion();
     this->twist_lin = this->robot_node->getVelocity();
     this->twist_ang = this->ang_vel->getValues();
+    this->acc_pos = this->imu->getValues();
 }
 
 

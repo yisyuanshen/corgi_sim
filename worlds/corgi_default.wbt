@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 1
 }
 Viewpoint {
-  orientation -0.14034140516411323 0.2484769247550972 0.9584171888383534 1.0650671204764237
-  position -3.7623146622566477 -2.407465547436269 0.9835332758682765
+  orientation -0.11722812751075591 0.2176069216924928 0.9689709973739357 1.0148485203603674
+  position -3.8740812663912547 -2.4034770065290783 0.8903913618812571
   follow "robot"
 }
 TexturedBackground {
@@ -33,184 +33,156 @@ DEF CORGI Robot {
         size 0.5 0.1 0.2
       }
     }
-    DEF LF_DISTANCE HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      endPoint DistanceSensor {
-        translation 0.2 -0.055 -0.08
-        rotation 0 0 1 -1.5707963
-        children [
-          Shape {
-            appearance PBRAppearance {
-              baseColor 0.301961 0.301961 0.301961
-              roughness 1
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.01
-              radius 0.005
-            }
+    DistanceSensor {
+      translation 0.2 -0.055 -0.08
+      rotation 0 0 1 -1.5707963
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.301961 0.301961 0.301961
+            roughness 1
+            metalness 0
           }
-        ]
-        name "dst_lf"
-        lookupTable [
-          0 0 0
-          0.62 1000 0
-        ]
-        type "sonar"
-      }
-    }
-    DEF RF_DISTANCE HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      endPoint DistanceSensor {
-        translation 0.2 -0.055 0.08
-        rotation 0 0 1 -1.5707963
-        children [
-          Shape {
-            appearance PBRAppearance {
-              baseColor 0.301961 0.301961 0.301961
-              roughness 1
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.01
-              radius 0.005
-            }
+          geometry Cylinder {
+            height 0.01
+            radius 0.005
           }
-        ]
-        name "dst_rf"
-        lookupTable [
-          0 0 0
-          0.62 1000 0
-        ]
-        type "sonar"
-      }
-    }
-    DEF RH_DISTANCE HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      endPoint DistanceSensor {
-        translation -0.2 -0.055 0.08
-        rotation 0 0 1 -1.5707963
-        children [
-          Shape {
-            appearance PBRAppearance {
-              baseColor 0.301961 0.301961 0.301961
-              roughness 1
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.01
-              radius 0.005
-            }
-          }
-        ]
-        name "dst_rh"
-        lookupTable [
-          0 0 0
-          0.62 1000 0
-        ]
-        type "sonar"
-      }
-    }
-    DEF LH_DISTANCE HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      endPoint DistanceSensor {
-        translation -0.2 -0.055 -0.08
-        rotation 0 0 1 -1.5707963
-        children [
-          Shape {
-            appearance PBRAppearance {
-              baseColor 0.301961 0.301961 0.301961
-              roughness 1
-              metalness 0
-            }
-            geometry Cylinder {
-              height 0.01
-              radius 0.005
-            }
-          }
-        ]
-        name "dst_lh"
-        lookupTable [
-          0 0 0
-          0.62 1000 0
-        ]
-        type "sonar"
-      }
-    }
-    DEF HINGE_IMU HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      endPoint Accelerometer {
-        translation -4.228787320315065e-09 -2.0381433211485417e-08 5.59510338864903e-10
-        rotation -0.9999999999996657 2.9901092489102905e-07 7.609758895250213e-07 1.5707961801967754
-        children [
-          DEF BOX Shape {
-            appearance PBRAppearance {
-              baseColor 0.8 0.8 0.8
-              roughness 1
-              metalness 0
-            }
-            geometry DEF BOX Box {
-              size 0.05 0.05 0.05
-            }
-          }
-        ]
-        name "imu"
-        boundingObject USE BOX
-        physics Physics {
         }
+      ]
+      name "dst_lf"
+      lookupTable [
+        0 0 0
+        0.62 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation 0.2 -0.055 0.08
+      rotation 0 0 1 -1.5707963
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.301961 0.301961 0.301961
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.01
+            radius 0.005
+          }
+        }
+      ]
+      name "dst_rf"
+      lookupTable [
+        0 0 0
+        0.62 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation -0.2 -0.055 0.08
+      rotation 0 0 1 -1.5707963
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.301961 0.301961 0.301961
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.01
+            radius 0.005
+          }
+        }
+      ]
+      name "dst_rh"
+      lookupTable [
+        0 0 0
+        0.62 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation -0.2 -0.055 -0.08
+      rotation 0 0 1 -1.5707963
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.301961 0.301961 0.301961
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.01
+            radius 0.005
+          }
+        }
+      ]
+      name "dst_lh"
+      lookupTable [
+        0 0 0
+        0.62 1000 0
+      ]
+      type "sonar"
+    }
+    Accelerometer {
+      translation -4.228787320315065e-09 -2.0381433211485417e-08 5.59510338864903e-10
+      rotation -0.9999999999996657 2.9901092489102905e-07 7.609758895250213e-07 1.5707961801967754
+      children [
+        DEF BOX Shape {
+          appearance PBRAppearance {
+            baseColor 0.8 0.8 0.8
+            roughness 1
+            metalness 0
+          }
+          geometry DEF BOX Box {
+            size 0.05 0.05 0.05
+          }
+        }
+      ]
+      name "imu"
+      boundingObject USE BOX
+      physics Physics {
       }
     }
-    DEF HINGE_GYRO HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      endPoint InertialUnit {
-        translation -4.228787320315065e-09 -2.0381433211485417e-08 5.595103388649022e-10
-        rotation -0.9999999999996657 2.99010924892006e-07 7.609758895348623e-07 1.5707961801967754
-        children [
-          DEF BOX Shape {
-            appearance PBRAppearance {
-              baseColor 0.8 0.8 0.8
-              roughness 1
-              metalness 0
-            }
-            geometry DEF BOX Box {
-              size 0.05 0.05 0.05
-            }
+    InertialUnit {
+      translation -4.228787320315065e-09 -2.0381433211485417e-08 5.595103388649022e-10
+      rotation -0.9999999999996657 2.99010924892006e-07 7.609758895348623e-07 1.5707961801967754
+      children [
+        DEF BOX Shape {
+          appearance PBRAppearance {
+            baseColor 0.8 0.8 0.8
+            roughness 1
+            metalness 0
           }
-        ]
-        name "gyro"
-        boundingObject USE BOX
-        physics Physics {
+          geometry DEF BOX Box {
+            size 0.05 0.05 0.05
+          }
         }
+      ]
+      name "gyro"
+      boundingObject USE BOX
+      physics Physics {
       }
     }
-    DEF HINGE_ANGVEL HingeJoint {
-      jointParameters HingeJointParameters {
-      }
-      endPoint Gyro {
-        translation -4.228787320315065e-09 -2.0381433211485417e-08 5.595103388649007e-10
-        rotation -0.9999999999996657 2.990109248916631e-07 7.60975889548351e-07 1.5707961801967754
-        children [
-          DEF BOX Shape {
-            appearance PBRAppearance {
-              baseColor 0.8 0.8 0.8
-              roughness 1
-              metalness 0
-            }
-            geometry DEF BOX Box {
-              size 0.05 0.05 0.05
-            }
+    Gyro {
+      translation -4.228787320315065e-09 -2.0381433211485417e-08 5.595103388649007e-10
+      rotation -0.9999999999996657 2.990109248916631e-07 7.60975889548351e-07 1.5707961801967754
+      children [
+        DEF BOX Shape {
+          appearance PBRAppearance {
+            baseColor 0.8 0.8 0.8
+            roughness 1
+            metalness 0
           }
-        ]
-        name "ang_vel"
-        boundingObject USE BOX
-        physics Physics {
+          geometry DEF BOX Box {
+            size 0.05 0.05 0.05
+          }
         }
+      ]
+      name "ang_vel"
+      boundingObject USE BOX
+      physics Physics {
       }
     }
     DEF LF_Rmotorbar HingeJoint {
@@ -1187,7 +1159,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF LF_lmotorbar Solid {
         translation 0.222 0 -0.2
-        rotation 0.2555098521754921 -0.9668064518959204 3.698570764102246e-06 6.283168162786524
+        rotation 0.25550985217549205 -0.9668064518959203 3.6985707641022456e-06 6.283168162786524
         children [
           DEF group_lmotorbar Group {
             children [
@@ -2463,7 +2435,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF RF_lmotorbar Solid {
         translation 0.222 0 0.2
-        rotation 3.58933327591514e-10 0.9999999999387917 -1.1064205190489118e-05 3.141636699015246
+        rotation 3.58933327591514e-10 0.9999999999387919 -1.106420519048912e-05 3.141636699015246
         children [
           USE group_lmotorbar
           DEF RF_Ll5l6 HingeJoint {
@@ -2728,7 +2700,7 @@ DEF CORGI Robot {
       ]
       endPoint DEF RH_lmotorbar Solid {
         translation -0.222 0 0.2
-        rotation 4.4442782787648454e-12 -0.9999999999996939 -7.824504822816596e-07 3.14160104444671
+        rotation 4.444278278764846e-12 -0.999999999999694 -7.824504822816596e-07 3.14160104444671
         children [
           USE group_lmotorbar
           DEF RH_Ll5l6 HingeJoint {
@@ -2850,7 +2822,7 @@ DEF CORGI Robot {
   }
   controller "csv_control"
   controllerArgs [
-    "output_csv/test.csv input_csv/test.csv"
+    "output_csv/15_WLW_rotate_h179_v_100_D_2_SL_0.41038_SS_0.054108_phiRL_.csv input_csv/15_WLW_rotate_h179_v_100_D_2_SL_0.41038_SS_0.054108_phiRL_.csv"
   ]
   supervisor TRUE
 }

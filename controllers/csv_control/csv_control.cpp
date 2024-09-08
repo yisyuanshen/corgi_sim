@@ -32,19 +32,9 @@ int main(int argc, char **argv) {
     input_data = read_csv(input_filename);
 
     std::vector<std::vector<std::string>> output_data;
-    std::vector<std::string> row;
-    std::ostringstream oss;
-
-    oss << "time,"
-        << "A_phi_r,A_phi_l,A_trq_r,A_trq_l,"
-        << "B_phi_r,B_phi_l,B_trq_r,B_trq_l,"
-        << "C_phi_r,C_phi_l,C_trq_r,C_trq_l,"
-        << "D_phi_r,D_phi_l,D_trq_r,D_trq_l,"
-        << "pos_x,pos_y,pos_z,"
-        << "ori_x,ori_y,ori_z,ori_w";
-
-    row.push_back(oss.str());
-    output_data.push_back(row);
+    
+    output_data.push_back(get_output_header());
+    write_csv(output_filename, output_data);
 
     // setup the robot
     Supervisor *supervisor = new Supervisor();
@@ -58,12 +48,6 @@ int main(int argc, char **argv) {
     int loop_counter = 0;
     while (supervisor->step(TIME_STEP) != -1) {
         printf("= = = Loop Count %d = = =\n", loop_counter);
-        
-        std::vector<std::string> row;
-
-        std::ostringstream oss;
-
-        oss << supervisor->getTime() << ",";
 
         int csv_idx = 0;
         for (auto& mod: corgi.leg_mods){
@@ -73,20 +57,12 @@ int main(int argc, char **argv) {
             mod->set_leg_position(phi_r_cmd, phi_l_cmd);
             mod->update_leg_param();
 
-            oss << mod->right_motor_position << "," << mod->left_motor_position << "," << mod->right_motor_torque << "," << mod->left_motor_torque << ",";
-
             csv_idx += 2;
         }
 
         corgi.update_robot_param();
 
-        oss << corgi.pose_pos[0] << "," << corgi.pose_pos[1] << "," << corgi.pose_pos[2] << ","
-            << corgi.pose_ori[0] << "," << corgi.pose_ori[1] << "," << corgi.pose_ori[2] << "," << corgi.pose_ori[3];
-
-        row.push_back(oss.str());
-
-        output_data.push_back(row);
-
+        output_data.push_back(get_output_data(supervisor, corgi));
         write_csv(output_filename, output_data);
 
         loop_counter++;
